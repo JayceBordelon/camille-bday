@@ -287,6 +287,29 @@
       animation: fadeUp 1.6s ease 3.9s forwards;
     }
     .reveal__details strong { color: var(--ink); font-weight: 500; }
+    .reveal__details .highlight {
+      margin: 0.85rem auto 0.25rem;
+      padding: clamp(0.85rem, 2.5vw, 1.05rem) clamp(1rem, 3vw, 1.25rem);
+      max-width: 32rem;
+      border: 1px solid rgba(245, 166, 35, 0.32);
+      border-radius: 12px;
+      background: linear-gradient(180deg,
+        rgba(245, 166, 35, 0.10),
+        rgba(160, 31, 91, 0.05));
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1.05rem, 3.4vw, 1.3rem);
+      line-height: 1.45;
+      letter-spacing: 0.005em;
+      color: var(--ink);
+    }
+    .reveal__details .highlight strong {
+      color: var(--bg-sun);
+      font-weight: 600;
+      font-style: italic;
+      letter-spacing: 0.005em;
+    }
 
     .reveal__birthday {
       font-family: 'Cormorant Garamond', serif;
@@ -883,8 +906,8 @@
       <div class="reveal__details">
         <p><strong>Outside Lands &middot; Sunday, August 9, 2026</strong></p>
         <p>RÜFÜS DU SOL is closing the night you&rsquo;ve been waiting for.</p>
-        <p>Your flight is on me. Just bring yourself.</p>
-        <p>Kade &amp; Lauren are coming up for the weekend. The four of us, my apartment, the whole thing.</p>
+        <p class="highlight"><strong>I&rsquo;m buying your flight.</strong> Paid in full, both ways. Just bring yourself.</p>
+        <p class="highlight"><strong>Kade &amp; Lauren are staying with us</strong> at my apartment all weekend. The four of us, the whole thing.</p>
       </div>
 
       <p class="reveal__birthday">Happy birthday, my love.</p>
