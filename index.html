@@ -269,13 +269,28 @@
       animation: fadeUp 1.6s ease 3.9s forwards;
     }
     .reveal__details strong { color: var(--ink); font-weight: 500; }
-    .reveal__details .accent {
-      color: var(--ink);
+
+    .reveal__birthday {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: clamp(1.05rem, 3.6vw, 1.25rem);
-      letter-spacing: 0.04em;
-      margin-top: 0.25rem;
+      font-weight: 500;
+      font-size: clamp(1.55rem, 5.5vw, 2.4rem);
+      line-height: 1.2;
+      letter-spacing: 0.005em;
+      color: var(--ink);
+      margin-block: clamp(0.5rem, 2vw, 1rem);
+      animation: fadeUp 1.6s ease 4.5s forwards;
+      opacity: 0;
+    }
+    .reveal__birthday::before,
+    .reveal__birthday::after {
+      content: "";
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--ink-line);
+      vertical-align: middle;
+      margin: 0 0.85em;
     }
 
     /* ---------- Rufus spotlight ---------- */
@@ -738,8 +753,9 @@
         <p>RÜFÜS DU SOL is closing the night you&rsquo;ve been waiting for.</p>
         <p>Your flight is on me. Just bring yourself.</p>
         <p>Kade &amp; Lauren are coming up for the weekend &mdash; the four of us, my apartment, the whole thing.</p>
-        <p class="accent">Happy birthday, my love.</p>
       </div>
+
+      <p class="reveal__birthday">Happy birthday, my love.</p>
 
       <!-- Rufus du Sol spotlight -->
       <figure class="spotlight" aria-label="RÜFÜS DU SOL — Sunday's headliner">
@@ -977,7 +993,7 @@
 
       const beats = [
         { id: "lyric1", cls: "show",          dur: 5150 },
-        { id: "lyric2", cls: "show",          dur: 4950 },
+        { id: "lyric2", cls: "show",          dur: 4700 },
         { id: "lyric3", cls: "show--linger",  dur: 7400 },
       ];
       for (const b of beats) {
