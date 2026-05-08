@@ -108,8 +108,8 @@
       place-items: center;
       width: 100%; max-width: 30rem;
       text-align: center;
-      opacity: 0;
-      animation: fadeIn 1.4s ease 0.2s forwards;
+      opacity: 1;
+      animation: fadeIn 1.4s ease 0.2s both;
     }
     .gate__hint {
       font-style: italic; color: var(--ink-soft);
@@ -158,6 +158,25 @@
       font-size: 0.82rem; color: var(--ink-faint);
       font-family: 'Inter', system-ui, sans-serif;
       letter-spacing: 0.06em; max-width: 22rem; line-height: 1.55;
+    }
+    .gate__error {
+      display: none;
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 500;
+      font-size: 0.74rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #ffb38a;
+      text-align: center;
+    }
+    .gate__error.show {
+      display: block;
+      animation: errorPop 0.45s ease;
+    }
+    @keyframes errorPop {
+      0%   { opacity: 0; transform: translateY(-6px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
     .gate.shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97); }
     @keyframes shake {
@@ -627,7 +646,10 @@
     }
     .btn svg { width: 14px; height: 14px; }
 
-    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -717,6 +739,7 @@
         >
         <button class="gate__submit" type="submit">Open</button>
       </form>
+      <p class="gate__error" id="gateError" role="alert" aria-live="polite">Not quite. Try again.</p>
       <p class="gate__hint-small">You know what you are to me. Type it as one word.</p>
     </section>
 
@@ -944,9 +967,10 @@
       }
     })();
 
-    const gate  = document.getElementById("gate");
-    const form  = document.getElementById("gateForm");
-    const input = document.getElementById("gateInput");
+    const gate       = document.getElementById("gate");
+    const form       = document.getElementById("gateForm");
+    const input      = document.getElementById("gateInput");
+    const gateError  = document.getElementById("gateError");
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -956,11 +980,17 @@
         runReveal();
       } else {
         gate.classList.remove("shake");
+        gateError.classList.remove("show");
         void gate.offsetWidth;
         gate.classList.add("shake");
+        gateError.classList.add("show");
         input.value = "";
         input.focus();
       }
+    });
+
+    input.addEventListener("input", () => {
+      gateError.classList.remove("show");
     });
 
     function fadeOut(el, ms) {
