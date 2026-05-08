@@ -504,19 +504,68 @@
       margin: 0.5rem auto 0;
     }
 
+    /* ---------- Morning pregame card ---------- */
+    .invite {
+      width: 100%;
+      max-width: 38rem;
+      justify-self: center;
+      margin-block: clamp(0.75rem, 3vw, 1.5rem);
+      padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.25rem, 4vw, 2rem);
+      text-align: center;
+      border: 1px solid var(--ink-line-soft);
+      border-radius: 14px;
+      background: linear-gradient(180deg,
+        rgba(245, 166, 35, 0.07),
+        rgba(160, 31, 91, 0.04));
+      display: grid;
+      gap: 0.7rem;
+      animation: fadeUp 1.6s ease 8.7s forwards;
+      opacity: 0;
+    }
+    .invite__kicker {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--bg-sun);
+    }
+    .invite__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1.5rem, 5vw, 2.1rem);
+      letter-spacing: 0.005em;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+    .invite__body {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.02rem, 3.2vw, 1.2rem);
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 30rem;
+      margin-inline: auto;
+      display: grid;
+      gap: 0.5rem;
+    }
+    .invite__body p { margin: 0; }
+
     /* ---------- Closing ---------- */
     .reveal__divider {
       width: 60px; height: 1px;
       background: var(--ink-line);
       justify-self: center;
       margin-top: 0.5rem;
-      animation: fadeUp 1.6s ease 8.8s forwards;
+      animation: fadeUp 1.6s ease 10.0s forwards;
     }
     .reveal__sign {
       font-style: italic;
       font-size: clamp(1.25rem, 4.5vw, 1.65rem);
       color: var(--ink);
-      animation: fadeUp 1.6s ease 9.2s forwards;
+      animation: fadeUp 1.6s ease 10.4s forwards;
     }
     .reveal__signature {
       font-family: 'Inter', system-ui, sans-serif;
@@ -524,14 +573,14 @@
       color: var(--ink-faint);
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      animation: fadeUp 1.6s ease 9.8s forwards;
+      animation: fadeUp 1.6s ease 11.0s forwards;
     }
     .reveal__actions {
       display: flex; flex-wrap: wrap;
       gap: 0.75rem;
       justify-content: center;
       margin-top: 0.25rem;
-      animation: fadeUp 1.6s ease 10.4s forwards;
+      animation: fadeUp 1.6s ease 11.6s forwards;
     }
     .btn {
       display: inline-flex; align-items: center; gap: 0.6rem;
@@ -764,6 +813,16 @@
           </li>
         </ol>
       </section>
+
+      <!-- Morning pregame -->
+      <aside class="invite" aria-label="Sunday morning pregame on the rooftop">
+        <p class="invite__kicker">Sunday morning</p>
+        <h3 class="invite__title">Come up early.</h3>
+        <div class="invite__body">
+          <p>I&rsquo;m hosting a pregame on the rooftop of my building before we head out to the park.</p>
+          <p>If your family ends up making the trip, they&rsquo;re all invited too &mdash; the whole crew, up there with us.</p>
+        </div>
+      </aside>
 
       <div class="reveal__divider" aria-hidden="true"></div>
 
