@@ -912,8 +912,12 @@
       await fadeOut(gate, 900);
       gate.style.display = "none";
 
+      // Hold a beat before lyric 1 — lyrics 2 and 3 still land at the
+      // same absolute moments because lyric 1's dur is trimmed to match.
+      await sleep(250);
+
       const beats = [
-        { id: "lyric1", cls: "show",          dur: 5400 },
+        { id: "lyric1", cls: "show",          dur: 5150 },
         { id: "lyric2", cls: "show",          dur: 4950 },
         { id: "lyric3", cls: "show--linger",  dur: 7400 },
       ];
