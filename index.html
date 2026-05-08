@@ -655,6 +655,116 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* ---------- Postscript / poem gate ---------- */
+    .postscript {
+      width: 100%;
+      max-width: 56rem;
+      justify-self: center;
+      margin-top: clamp(2.5rem, 7vw, 4.5rem);
+      display: grid;
+      gap: clamp(1rem, 4vw, 1.75rem);
+      text-align: center;
+      animation: fadeUp 1.6s ease 12.0s forwards;
+      opacity: 0;
+    }
+    .postscript__rule {
+      width: 80px; height: 1px;
+      background: var(--ink-line);
+      margin: 0 auto;
+      border: 0;
+    }
+    .postscript__gate {
+      display: grid;
+      gap: clamp(1rem, 3vw, 1.5rem);
+      place-items: center;
+      width: 100%;
+      max-width: 30rem;
+      justify-self: center;
+    }
+    .postscript__gate.unlocked { display: none; }
+    .postscript__kicker {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 500;
+      font-size: 0.74rem;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--bg-sun);
+    }
+    .postscript__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1.55rem, 5.5vw, 2.4rem);
+      letter-spacing: 0.005em;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+    .postscript__form {
+      width: 100%;
+      display: grid; gap: 0.85rem;
+      justify-items: center;
+    }
+    .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97); }
+
+    /* ---------- Poem ---------- */
+    .poem {
+      width: 100%;
+      max-width: 38rem;
+      margin: 0 auto;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.05rem, 3.4vw, 1.3rem);
+      line-height: 1.7;
+      color: var(--ink);
+      text-align: center;
+      display: none;
+    }
+    .poem.show {
+      display: block;
+      animation: poemReveal 1.8s ease forwards;
+    }
+    @keyframes poemReveal {
+      from { opacity: 0; transform: translateY(10px); filter: blur(8px); }
+      to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+    }
+    .poem__preamble {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1rem, 3vw, 1.15rem);
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 32rem;
+      margin: 0 auto;
+    }
+    .poem__rule {
+      width: 60px; height: 1px;
+      background: var(--ink-line);
+      border: 0;
+      margin: clamp(1.5rem, 4vw, 2.25rem) auto;
+    }
+    .poem .roman {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: clamp(1.4rem, 4.8vw, 1.9rem);
+      letter-spacing: 0.08em;
+      color: var(--bg-sun);
+      margin: clamp(1.75rem, 5vw, 2.75rem) 0 0.75rem;
+    }
+    .poem .roman:first-child { margin-top: 0; }
+    .poem .stanza {
+      margin-block: clamp(0.9rem, 2.5vw, 1.4rem);
+    }
+    .poem .stanza:first-of-type { margin-top: 0.5rem; }
+    .poem .stanza--closing {
+      margin-top: clamp(1.5rem, 4vw, 2.25rem);
+      color: #ffe7b5;
+      font-weight: 500;
+    }
+
     /* ---------- Hidden YouTube audio host ---------- */
     .ytplayer {
       position: fixed;
@@ -887,6 +997,36 @@
         </a>
       </div>
 
+      <!-- Postscript: poem unlock -->
+      <section class="postscript" aria-label="A poem, locked">
+        <hr class="postscript__rule" aria-hidden="true">
+
+        <div class="postscript__gate" id="poemGate">
+          <p class="postscript__kicker">P.S.</p>
+          <h2 class="postscript__title">There&rsquo;s a poem for you.</h2>
+          <form class="postscript__form" id="poemForm" autocomplete="off" novalidate>
+            <input
+              class="gate__input"
+              id="poemInput"
+              type="password"
+              inputmode="text"
+              autocomplete="off"
+              autocapitalize="none"
+              autocorrect="off"
+              spellcheck="false"
+              placeholder="another word"
+              aria-label="poem password"
+              required
+            >
+            <button class="gate__submit" type="submit">Read</button>
+          </form>
+          <p class="gate__error" id="poemError" role="alert" aria-live="polite">Not quite. Try again.</p>
+          <p class="gate__hint-small">A word only the two of us would know.</p>
+        </div>
+
+        <article class="poem" id="poem" aria-live="polite"></article>
+      </section>
+
     </section>
 
   </main>
@@ -976,6 +1116,7 @@
       e.preventDefault();
       const hash = await sha256(norm(input.value));
       if (hash === PASSWORD_HASH) {
+        document.title = "Happy Birthday Camille <3";
         input.blur();
         runReveal();
       } else {
@@ -991,6 +1132,114 @@
 
     input.addEventListener("input", () => {
       gateError.classList.remove("show");
+    });
+
+    /* ---------- Postscript: encrypted poem ---------- */
+    // AES-256-GCM with PBKDF2 (200k iter SHA-256). Layout:
+    //   salt(16) | iv(12) | tag(16) | ciphertext
+    const POEM_BLOB = "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";
+    const POEM_PREAMBLE = "Because I promised I would share this poem with you. I wrote this exactly one month after we started dating.";
+
+    const poemGate    = document.getElementById("poemGate");
+    const poemForm    = document.getElementById("poemForm");
+    const poemInput   = document.getElementById("poemInput");
+    const poemError   = document.getElementById("poemError");
+    const poemDisplay = document.getElementById("poem");
+
+    function b64ToBytes(b64) {
+      const bin = atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return bytes;
+    }
+
+    async function decryptPoem(password) {
+      const blob = b64ToBytes(POEM_BLOB);
+      const salt = blob.slice(0, 16);
+      const iv   = blob.slice(16, 28);
+      const tag  = blob.slice(28, 44);
+      const ct   = blob.slice(44);
+      const ctWithTag = new Uint8Array(ct.length + tag.length);
+      ctWithTag.set(ct);
+      ctWithTag.set(tag, ct.length);
+
+      const keyMaterial = await crypto.subtle.importKey(
+        "raw", new TextEncoder().encode(password),
+        "PBKDF2", false, ["deriveKey"]
+      );
+      const key = await crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt, iterations: 200000, hash: "SHA-256" },
+        keyMaterial,
+        { name: "AES-GCM", length: 256 },
+        false, ["decrypt"]
+      );
+      const plain = await crypto.subtle.decrypt(
+        { name: "AES-GCM", iv }, key, ctWithTag
+      );
+      return new TextDecoder().decode(plain);
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function renderPoem(text) {
+      const lines = text.split("\n");
+      const parts = [];
+      let stanza = [];
+      const flush = () => {
+        if (stanza.length) {
+          parts.push(`<p class="stanza">${stanza.join("<br>")}</p>`);
+          stanza = [];
+        }
+      };
+      for (const raw of lines) {
+        const line = raw.trim();
+        if (!line) { flush(); continue; }
+        if (/^[IVX]+\.$/.test(line)) {
+          flush();
+          parts.push(`<span class="roman">${escapeHtml(line)}</span>`);
+          continue;
+        }
+        stanza.push(escapeHtml(line));
+      }
+      flush();
+      // Mark the final stanza as closing for slight emphasis
+      const last = parts.length - 1;
+      if (last >= 0 && parts[last].startsWith('<p class="stanza">')) {
+        parts[last] = parts[last].replace('class="stanza"', 'class="stanza stanza--closing"');
+      }
+      poemDisplay.innerHTML = `
+        <p class="poem__preamble">${escapeHtml(POEM_PREAMBLE)}</p>
+        <hr class="poem__rule" aria-hidden="true">
+        ${parts.join("")}
+      `;
+    }
+
+    poemForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const pw = poemInput.value;
+      try {
+        const text = await decryptPoem(pw);
+        renderPoem(text);
+        poemGate.classList.add("unlocked");
+        poemDisplay.classList.add("show");
+        poemInput.blur();
+        setTimeout(() => poemDisplay.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+      } catch (err) {
+        poemGate.classList.remove("shake");
+        poemError.classList.remove("show");
+        void poemGate.offsetWidth;
+        poemGate.classList.add("shake");
+        poemError.classList.add("show");
+        poemInput.value = "";
+        poemInput.focus();
+      }
+    });
+
+    poemInput.addEventListener("input", () => {
+      poemError.classList.remove("show");
     });
 
     function fadeOut(el, ms) {
@@ -1023,7 +1272,7 @@
 
       const beats = [
         { id: "lyric1", cls: "show",          dur: 4950 },
-        { id: "lyric2", cls: "show",          dur: 4500 },
+        { id: "lyric2", cls: "show",          dur: 4300 },
         { id: "lyric3", cls: "show--linger",  dur: 7400 },
       ];
       for (const b of beats) {
