@@ -370,6 +370,62 @@
         0 2px 18px rgba(0,0,0,0.85);
     }
 
+    /* ---------- Pull quote ---------- */
+    .quote {
+      width: 100%;
+      max-width: 44rem;
+      justify-self: center;
+      margin-block: clamp(0.75rem, 3vw, 1.5rem);
+      padding: clamp(1.75rem, 5vw, 3rem) clamp(1.25rem, 5vw, 2.5rem) clamp(1.5rem, 4.5vw, 2.5rem);
+      position: relative;
+      text-align: center;
+      border-top: 1px solid var(--ink-line-soft);
+      border-bottom: 1px solid var(--ink-line-soft);
+      animation: fadeUp 1.6s ease 6.3s forwards;
+      opacity: 0;
+    }
+    .quote::before {
+      content: "\201C";
+      position: absolute;
+      top: -0.18em;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      font-size: clamp(4.5rem, 14vw, 7.5rem);
+      line-height: 1;
+      color: rgba(245, 166, 35, 0.20);
+      pointer-events: none;
+      user-select: none;
+    }
+    .quote__body {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.05rem, 3.6vw, 1.4rem);
+      line-height: 1.55;
+      color: var(--ink);
+      display: grid;
+      gap: 1em;
+      margin: 0;
+    }
+    .quote__body p { margin: 0; }
+    .quote__resolve {
+      color: #ffe7b5;
+      font-weight: 500;
+      letter-spacing: 0.005em;
+    }
+    .quote__cite {
+      display: block;
+      margin-top: clamp(1.1rem, 3vw, 1.5rem);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .quote__cite b { color: var(--ink-soft); font-weight: 500; }
+
     /* ---------- Lineup ---------- */
     .lineup {
       width: 100%;
@@ -380,7 +436,7 @@
       text-align: center;
     }
     .lineup {
-      animation: fadeUp 1.6s ease 6.3s forwards;
+      animation: fadeUp 1.6s ease 7.5s forwards;
       opacity: 0;
     }
     .lineup__header {
@@ -460,13 +516,13 @@
       background: var(--ink-line);
       justify-self: center;
       margin-top: 0.5rem;
-      animation: fadeUp 1.6s ease 7.6s forwards;
+      animation: fadeUp 1.6s ease 8.8s forwards;
     }
     .reveal__sign {
       font-style: italic;
       font-size: clamp(1.25rem, 4.5vw, 1.65rem);
       color: var(--ink);
-      animation: fadeUp 1.6s ease 8.0s forwards;
+      animation: fadeUp 1.6s ease 9.2s forwards;
     }
     .reveal__signature {
       font-family: 'Inter', system-ui, sans-serif;
@@ -474,14 +530,14 @@
       color: var(--ink-faint);
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      animation: fadeUp 1.6s ease 8.6s forwards;
+      animation: fadeUp 1.6s ease 9.8s forwards;
     }
     .reveal__actions {
       display: flex; flex-wrap: wrap;
       gap: 0.75rem;
       justify-content: center;
       margin-top: 0.25rem;
-      animation: fadeUp 1.6s ease 9.2s forwards;
+      animation: fadeUp 1.6s ease 10.4s forwards;
     }
     .btn {
       display: inline-flex; align-items: center; gap: 0.6rem;
@@ -658,6 +714,19 @@
           </figcaption>
         </div>
       </figure>
+
+      <!-- Favourite Rufus passage -->
+      <aside class="quote" aria-label="A line from RÜFÜS DU SOL, Until the Sun Needs to Rise">
+        <blockquote class="quote__body">
+          <p>Staring out the window, changing up my point of view.<br>
+             Out across the border, fall into a daydream of you.</p>
+          <p>But I don&rsquo;t want to go if you don&rsquo;t want to go there too.<br>
+             And I don&rsquo;t want to see it if you don&rsquo;t want to see this through.</p>
+          <p class="quote__resolve">Until the sun needs to rise.<br>
+             We will sleep until the morning comes.</p>
+        </blockquote>
+        <cite class="quote__cite">&mdash; <b>RÜFÜS DU SOL</b> &middot; Until the Sun Needs to Rise</cite>
+      </aside>
 
       <!-- Sunday tier hierarchy -->
       <section class="lineup" aria-labelledby="lineup-title">
@@ -851,7 +920,7 @@
 
       const beats = [
         { id: "lyric1", cls: "show",          dur: 5400 },
-        { id: "lyric2", cls: "show",          dur: 5400 },
+        { id: "lyric2", cls: "show",          dur: 5150 },
         { id: "lyric3", cls: "show--linger",  dur: 7400 },
       ];
       for (const b of beats) {
