@@ -278,45 +278,85 @@
       margin-top: 0.25rem;
     }
 
-    /* Poster card */
-    .poster {
+    /* ---------- Rufus spotlight ---------- */
+    .spotlight {
       width: 100%;
-      max-width: 38rem;
+      max-width: 56rem;
       justify-self: center;
-      background: rgba(7, 4, 13, 0.45);
-      border: 1px solid var(--ink-line-soft);
-      border-radius: 14px;
-      padding: clamp(0.85rem, 2.5vw, 1.25rem);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8);
+      margin-block: clamp(0.5rem, 2vw, 1rem);
+      display: grid; gap: clamp(0.85rem, 2.5vw, 1.25rem);
+      text-align: center;
       animation: fadeUp 1.6s ease 5.1s forwards;
+      opacity: 0;
     }
-    .poster__frame {
+    .spotlight__frame {
+      position: relative;
       width: 100%;
-      aspect-ratio: 3 / 2;
-      background: #0a0612;
-      border-radius: 8px;
+      aspect-ratio: 16 / 10;
+      max-height: 75vh;
+      border-radius: 16px;
       overflow: hidden;
-      display: grid; place-items: center;
+      isolation: isolate;
+      box-shadow:
+        0 50px 110px -45px rgba(245, 166, 35, 0.38),
+        0 30px 70px -30px rgba(160, 31, 91, 0.45),
+        inset 0 0 0 1px var(--ink-line-soft);
     }
-    .poster__frame img {
+    .spotlight__frame::before {
+      content: "";
+      position: absolute; inset: -15%;
+      background: radial-gradient(circle, rgba(245, 166, 35, 0.28) 0%, rgba(236, 72, 137, 0.12) 35%, transparent 65%);
+      filter: blur(40px);
+      z-index: -1;
+      pointer-events: none;
+    }
+    .spotlight__frame img {
       width: 100%; height: 100%;
-      object-fit: contain;
-      object-position: center;
+      object-fit: cover;
+      object-position: center 35%;
+      filter: saturate(1.12) contrast(1.06) brightness(0.95);
     }
-    .poster__cap {
-      display: flex; flex-wrap: wrap;
-      align-items: center; justify-content: center;
-      gap: 0.4rem 0.75rem;
-      margin-top: 0.85rem;
+    .spotlight__frame::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 50% 55%, transparent 0%, rgba(7,4,13,0.35) 90%),
+        linear-gradient(180deg, rgba(7,4,13,0.15) 0%, transparent 30%, rgba(7,4,13,0.6) 100%);
+      pointer-events: none;
+    }
+    .spotlight__overlay {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: clamp(1rem, 4vw, 2rem);
+      display: grid; gap: 0.4rem; justify-items: center;
+      pointer-events: none;
+    }
+    .spotlight__kicker {
       font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.72rem;
-      color: var(--ink-soft);
-      letter-spacing: 0.22em; text-transform: uppercase;
+      font-size: clamp(0.65rem, 2vw, 0.78rem);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--bg-sun);
+      text-shadow: 0 1px 18px rgba(0,0,0,0.7);
     }
-    .poster__cap b { color: var(--bg-sun); font-weight: 500; }
-    .poster__cap .dot { color: var(--ink-faint); }
+    .spotlight__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 9vw, 4.6rem);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      background: linear-gradient(180deg, #fff8e6 0%, #f5a623 55%, #ec4889 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+    }
+    .spotlight__sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 3.2vw, 1.3rem);
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      max-width: 36rem;
+      text-shadow: 0 1px 18px rgba(0,0,0,0.7);
+    }
 
     /* ---------- Lineup ---------- */
     .lineup {
@@ -533,27 +573,28 @@
       </figure>
 
       <div class="reveal__details">
-        <p><strong>Outside Lands 2026</strong> &middot; August 7&ndash;9</p>
+        <p><strong>Outside Lands &middot; Sunday, August 9, 2026</strong></p>
         <p>RÜFÜS DU SOL is closing the night you&rsquo;ve been waiting for.</p>
         <p>Your flight is on me. Just bring yourself.</p>
         <p>Kade &amp; Lauren are coming up for the weekend &mdash; the four of us, my apartment, the whole thing.</p>
         <p class="accent">Happy birthday, my love.</p>
       </div>
 
-      <!-- Official poster card -->
-      <figure class="poster" aria-label="Official Outside Lands 2026 lineup poster">
-        <div class="poster__frame">
+      <!-- Rufus du Sol spotlight -->
+      <figure class="spotlight" aria-label="RÜFÜS DU SOL — Sunday's headliner">
+        <div class="spotlight__frame">
           <img
-            src="https://sfoutsidelands.com/assets/ol26_mainadmat_singleday_social-web_031126_web_1280px-short.png"
-            alt="Outside Lands 2026 official lineup poster — Friday, Saturday, Sunday"
+            src="https://upload.wikimedia.org/wikipedia/commons/1/18/Rufus_Du_Sol_%2829357069668%29.jpg"
+            alt="RÜFÜS DU SOL performing live"
             loading="lazy"
             decoding="async"
           >
+          <figcaption class="spotlight__overlay">
+            <span class="spotlight__kicker">Sunday's headliner</span>
+            <span class="spotlight__title">RÜFÜS DU SOL</span>
+            <span class="spotlight__sub">The night you&rsquo;ve been waiting for &mdash; live, under the lights.</span>
+          </figcaption>
         </div>
-        <figcaption class="poster__cap">
-          <span>Fri &middot; Sat &middot;</span>
-          <b>Sunday is ours</b>
-        </figcaption>
       </figure>
 
       <!-- Sunday tier hierarchy -->
