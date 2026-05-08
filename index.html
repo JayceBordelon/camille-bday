@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0612">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Open me.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://sfoutsidelands.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-base:   #07040d;
+      --bg-deep:   #1a0a2e;
+      --bg-mid:    #4a1247;
+      --bg-glow:   #a01f5b;
+      --bg-warm:   #d8531a;
+      --bg-sun:    #f5a623;
+      --ink:       #f7ead2;
+      --ink-soft:  rgba(247, 234, 210, 0.74);
+      --ink-faint: rgba(247, 234, 210, 0.32);
+      --ink-line:  rgba(247, 234, 210, 0.22);
+      --ink-line-soft: rgba(247, 234, 210, 0.10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html, body { height: 100%; }
+    body {
+      background: var(--bg-base);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    body.revealed { overflow-y: auto; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ---------- Sky ---------- */
+    .sky {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 90% 55% at 50% 110%, var(--bg-sun) 0%, transparent 38%),
+        radial-gradient(ellipse 110% 65% at 50% 95%,  var(--bg-warm) 0%, transparent 50%),
+        radial-gradient(ellipse 130% 80% at 50% 75%,  var(--bg-glow) 0%, transparent 62%),
+        linear-gradient(180deg, var(--bg-base) 0%, var(--bg-deep) 45%, var(--bg-mid) 80%, var(--bg-glow) 100%);
+      animation: drift 28s ease-in-out infinite alternate;
+      will-change: transform, filter;
+    }
+    @keyframes drift {
+      0%   { transform: translateY(0)     scale(1.00); filter: hue-rotate(0deg)  saturate(1); }
+      100% { transform: translateY(-1.8%) scale(1.05); filter: hue-rotate(10deg) saturate(1.1); }
+    }
+    .grain {
+      position: fixed; inset: -50%; z-index: 1; pointer-events: none;
+      opacity: 0.06; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='0.65'/></svg>");
+    }
+    .embers { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .embers span {
+      position: absolute; bottom: -20px;
+      width: 3px; height: 3px; border-radius: 50%;
+      box-shadow: 0 0 8px 1px rgba(245, 166, 35, 0.6);
+      opacity: 0;
+      animation: rise linear infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes rise {
+      0%   { transform: translateY(0)      scale(1);   opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.4; }
+      100% { transform: translateY(-110vh) scale(0.4); opacity: 0; }
+    }
+
+    /* ---------- Layout ---------- */
+    main {
+      position: relative; z-index: 2;
+      min-height: 100dvh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: clamp(1.25rem, 5vw, 3rem);
+      padding-bottom: max(clamp(1.25rem, 5vw, 3rem), env(safe-area-inset-bottom));
+      padding-top:    max(clamp(1.25rem, 5vw, 3rem), env(safe-area-inset-top));
+    }
+    body.revealed main {
+      justify-content: flex-start;
+      padding-block: clamp(2.5rem, 8vw, 5rem);
+    }
+
+    /* ---------- Gate ---------- */
+    .gate {
+      display: grid; gap: clamp(1.25rem, 4vw, 2rem);
+      place-items: center;
+      width: 100%; max-width: 30rem;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1.4s ease 0.2s forwards;
+    }
+    .gate__hint {
+      font-style: italic; color: var(--ink-soft);
+      font-size: clamp(0.95rem, 3vw, 1.1rem);
+      letter-spacing: 0.02em;
+    }
+    .gate__prompt {
+      font-size: clamp(2rem, 8vw, 3rem);
+      font-weight: 300; line-height: 1.15; letter-spacing: -0.015em;
+    }
+    .gate__form {
+      width: 100%;
+      display: grid; gap: 0.85rem;
+      justify-items: center;
+    }
+    .gate__input {
+      width: 100%; max-width: 22rem;
+      background: transparent; border: none;
+      border-bottom: 1px solid var(--ink-line);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+      padding: 0.6rem 0.5rem;
+      text-align: center; outline: none;
+      caret-color: var(--bg-sun);
+      transition: border-color 0.5s ease;
+      letter-spacing: 0.04em;
+    }
+    .gate__input:focus { border-bottom-color: var(--ink); }
+    .gate__input::placeholder { color: var(--ink-faint); font-style: italic; }
+    .gate__submit {
+      appearance: none; -webkit-appearance: none;
+      background: transparent; color: var(--ink);
+      border: 1px solid var(--ink-line);
+      border-radius: 999px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+      padding: 0.85rem 1.6rem; min-height: 44px;
+      cursor: pointer;
+      transition: border-color 0.4s ease, background 0.4s ease, color 0.4s ease;
+    }
+    .gate__submit:hover, .gate__submit:focus-visible {
+      border-color: var(--ink); background: rgba(247, 234, 210, 0.05); outline: none;
+    }
+    .gate__hint-small {
+      font-size: 0.82rem; color: var(--ink-faint);
+      font-family: 'Inter', system-ui, sans-serif;
+      letter-spacing: 0.06em; max-width: 22rem; line-height: 1.55;
+    }
+    .gate.shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97); }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      15%, 55% { transform: translateX(-9px); }
+      35%, 75% { transform: translateX(9px); }
+    }
+
+    /* ---------- Lyric stage ---------- */
+    .lyric {
+      position: fixed; inset: 0; z-index: 4;
+      display: grid; place-items: center;
+      font-size: clamp(1.85rem, 8.5vw, 5rem);
+      font-weight: 300; font-style: italic;
+      letter-spacing: -0.012em; line-height: 1.18;
+      text-align: center;
+      padding: clamp(1.5rem, 6vw, 3rem);
+      opacity: 0; pointer-events: none;
+      text-shadow: 0 1px 30px rgba(10, 6, 18, 0.6);
+    }
+    .lyric.show         { animation: lyricCycle 5.4s ease-in-out forwards; }
+    .lyric.show--linger { animation: lyricCycle 7.4s ease-in-out forwards; }
+    @keyframes lyricCycle {
+      0%   { opacity: 0; transform: translateY(10px); filter: blur(8px); }
+      22%  { opacity: 1; transform: translateY(0);    filter: blur(0); }
+      78%  { opacity: 1; transform: translateY(0);    filter: blur(0); }
+      100% { opacity: 0; transform: translateY(-10px); filter: blur(5px); }
+    }
+
+    /* ---------- Reveal ---------- */
+    .reveal {
+      display: none;
+      width: 100%;
+      max-width: 56rem;
+      text-align: center;
+      gap: clamp(1.25rem, 4vw, 2rem);
+      padding: 0.5rem;
+    }
+    .reveal.show { display: grid; }
+    .reveal > * {
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    .reveal__opener {
+      font-size: clamp(1.05rem, 3.5vw, 1.45rem);
+      font-style: italic; color: var(--ink-soft);
+      letter-spacing: 0.01em;
+      animation: fadeUp 1.4s ease 0.3s forwards;
+    }
+    .reveal__headline {
+      font-size: clamp(2.1rem, 8.5vw, 4.4rem);
+      font-weight: 400; line-height: 1.06; letter-spacing: -0.018em;
+      animation: fadeUp 1.6s ease 1.5s forwards;
+    }
+    .reveal__headline em {
+      display: inline-block;
+      font-style: italic; font-weight: 500;
+      background: linear-gradient(180deg, #fff8e6 0%, #f5a623 55%, #ec4889 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* Hero photo banner */
+    .reveal__hero {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      max-height: 60vh;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-block: 0.5rem;
+      box-shadow: 0 30px 60px -25px rgba(0,0,0,0.7), inset 0 0 0 1px var(--ink-line-soft);
+      animation: fadeUp 1.6s ease 2.7s forwards;
+    }
+    .reveal__hero img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(1.05) contrast(1.04) brightness(0.85);
+    }
+    .reveal__hero::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, rgba(7,4,13,0.35) 0%, rgba(7,4,13,0) 35%, rgba(7,4,13,0.55) 100%),
+        linear-gradient(180deg, rgba(160,31,91,0.22), rgba(216,83,26,0.18));
+      pointer-events: none;
+    }
+    .reveal__hero-caption {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: clamp(1rem, 3.5vw, 1.5rem);
+      display: flex; flex-direction: column; align-items: flex-start;
+      gap: 0.15rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--ink); text-align: left;
+      text-shadow: 0 1px 12px rgba(0,0,0,0.6);
+    }
+    .reveal__hero-caption .accent { font-size: 0.95em; color: var(--bg-sun); }
+
+    /* Details strip */
+    .reveal__details {
+      display: grid; gap: 0.55rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: clamp(0.92rem, 3vw, 1rem);
+      color: var(--ink-soft);
+      letter-spacing: 0.025em; line-height: 1.65;
+      animation: fadeUp 1.6s ease 3.9s forwards;
+    }
+    .reveal__details strong { color: var(--ink); font-weight: 500; }
+    .reveal__details .accent {
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.05rem, 3.6vw, 1.25rem);
+      letter-spacing: 0.04em;
+      margin-top: 0.25rem;
+    }
+
+    /* Poster card */
+    .poster {
+      width: 100%;
+      max-width: 38rem;
+      justify-self: center;
+      background: rgba(7, 4, 13, 0.45);
+      border: 1px solid var(--ink-line-soft);
+      border-radius: 14px;
+      padding: clamp(0.85rem, 2.5vw, 1.25rem);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8);
+      animation: fadeUp 1.6s ease 5.1s forwards;
+    }
+    .poster__frame {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      background: #0a0612;
+      border-radius: 8px;
+      overflow: hidden;
+      display: grid; place-items: center;
+    }
+    .poster__frame img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+    .poster__cap {
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: center;
+      gap: 0.4rem 0.75rem;
+      margin-top: 0.85rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.72rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.22em; text-transform: uppercase;
+    }
+    .poster__cap b { color: var(--bg-sun); font-weight: 500; }
+    .poster__cap .dot { color: var(--ink-faint); }
+
+    /* ---------- Lineup ---------- */
+    .lineup {
+      width: 100%;
+      max-width: 50rem;
+      justify-self: center;
+      margin-top: clamp(1rem, 3vw, 2rem);
+      display: grid; gap: clamp(1rem, 3vw, 1.75rem);
+      text-align: center;
+    }
+    .lineup {
+      animation: fadeUp 1.6s ease 6.3s forwards;
+      opacity: 0;
+    }
+    .lineup__header {
+      display: grid; gap: 0.4rem;
+    }
+    .lineup__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      letter-spacing: 0.01em;
+    }
+    .lineup__sub {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.74rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .lineup__board {
+      list-style: none;
+      display: grid;
+      gap: clamp(0.75rem, 2.5vw, 1.5rem);
+      padding: clamp(1.25rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
+      border: 1px solid var(--ink-line-soft);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255, 247, 230, 0.04), rgba(160, 31, 91, 0.05));
+    }
+
+    .tier { line-height: 1.18; }
+    .tier--1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 9vw, 4.4rem);
+      letter-spacing: 0.04em;
+      background: linear-gradient(180deg, #fff8e6 0%, #f5a623 55%, #ec4889 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      padding-block: 0.25rem;
+    }
+    .tier--2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: clamp(1.3rem, 5vw, 2.2rem);
+      letter-spacing: 0.02em;
+      color: var(--ink);
+    }
+    .tier--3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      font-style: italic;
+      font-size: clamp(1.1rem, 4vw, 1.6rem);
+      letter-spacing: 0.02em;
+      color: var(--ink);
+    }
+    .tier--4 {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 400;
+      font-size: clamp(0.78rem, 2.4vw, 0.95rem);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      line-height: 1.85;
+      max-width: 44rem;
+      margin-inline: auto;
+    }
+    .tier--4 .sep { color: var(--ink-faint); margin-inline: 0.25em; }
+    .tier__rule {
+      width: 40px; height: 1px;
+      background: var(--ink-line);
+      margin: 0.5rem auto 0;
+    }
+
+    /* ---------- Closing ---------- */
+    .reveal__divider {
+      width: 60px; height: 1px;
+      background: var(--ink-line);
+      justify-self: center;
+      margin-top: 0.5rem;
+      animation: fadeUp 1.6s ease 7.6s forwards;
+    }
+    .reveal__sign {
+      font-style: italic;
+      font-size: clamp(1.25rem, 4.5vw, 1.65rem);
+      color: var(--ink);
+      animation: fadeUp 1.6s ease 8.0s forwards;
+    }
+    .reveal__signature {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      animation: fadeUp 1.6s ease 8.6s forwards;
+    }
+    .reveal__actions {
+      display: flex; flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 0.25rem;
+      animation: fadeUp 1.6s ease 9.2s forwards;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.85rem 1.5rem; min-height: 44px;
+      border: 1px solid var(--ink-line);
+      border-radius: 999px;
+      color: var(--ink);
+      text-decoration: none;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      transition: border-color 0.4s ease, background 0.4s ease, transform 0.4s ease;
+    }
+    .btn:hover, .btn:focus-visible {
+      border-color: var(--ink);
+      background: rgba(247, 234, 210, 0.06);
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .btn--primary {
+      border-color: rgba(245, 166, 35, 0.4);
+      color: var(--bg-sun);
+    }
+    .btn--primary:hover {
+      border-color: var(--bg-sun);
+      background: rgba(245, 166, 35, 0.08);
+      color: #ffd58a;
+    }
+    .btn svg { width: 14px; height: 14px; }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---------- Wider screens ---------- */
+    @media (min-width: 720px) {
+      .gate__form { grid-auto-flow: column; gap: 1rem; align-items: end; }
+      .gate__input { max-width: 18rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="embers" aria-hidden="true" id="embers"></div>
+
+  <main>
+
+    <!-- ---------- Gate ---------- -->
+    <section class="gate" id="gate" aria-label="Locked">
+      <p class="gate__hint">For Camille.</p>
+      <h1 class="gate__prompt">A word, first.</h1>
+      <form class="gate__form" id="gateForm" autocomplete="off" novalidate>
+        <input
+          class="gate__input"
+          id="gateInput"
+          type="password"
+          inputmode="text"
+          autocomplete="off"
+          autocapitalize="none"
+          autocorrect="off"
+          spellcheck="false"
+          placeholder="the password"
+          aria-label="password"
+          required
+        >
+        <button class="gate__submit" type="submit">Open</button>
+      </form>
+      <p class="gate__hint-small">You know what you are to me. Type it as one word.</p>
+    </section>
+
+    <!-- ---------- Lyric beats ---------- -->
+    <section class="lyric" id="lyric1" aria-hidden="true">If you want me&hellip;</section>
+    <section class="lyric" id="lyric2" aria-hidden="true">If you need me&hellip;</section>
+    <section class="lyric" id="lyric3" aria-hidden="true">I&rsquo;m yours.</section>
+
+    <!-- ---------- Reveal ---------- -->
+    <section class="reveal" id="reveal" aria-live="polite">
+
+      <p class="reveal__opener">So here&rsquo;s the thing&hellip;</p>
+
+      <h2 class="reveal__headline">
+        I got us <em>Sunday passes</em><br>to Outside Lands.
+      </h2>
+
+      <figure class="reveal__hero" aria-hidden="false">
+        <img
+          src="https://images.unsplash.com/photo-1715390321213-c8d88b3e024a?w=1800&q=80&auto=format&fit=crop"
+          alt="The Golden Gate at sunset, San Francisco"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        >
+        <figcaption class="reveal__hero-caption">
+          <span class="accent">Golden Gate Park</span>
+          <span>San Francisco &middot; Sunday, August 9, 2026</span>
+        </figcaption>
+      </figure>
+
+      <div class="reveal__details">
+        <p><strong>Outside Lands 2026</strong> &middot; August 7&ndash;9</p>
+        <p>RÜFÜS DU SOL is closing the night you&rsquo;ve been waiting for.</p>
+        <p>Your flight is on me. Just bring yourself.</p>
+        <p class="accent">Happy birthday, my love.</p>
+      </div>
+
+      <!-- Official poster card -->
+      <figure class="poster" aria-label="Official Outside Lands 2026 lineup poster">
+        <div class="poster__frame">
+          <img
+            src="https://sfoutsidelands.com/assets/ol26_mainadmat_singleday_social-web_031126_web_1280px-short.png"
+            alt="Outside Lands 2026 official lineup poster — Friday, Saturday, Sunday"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+        <figcaption class="poster__cap">
+          <span>Fri &middot; Sat &middot;</span>
+          <b>Sunday is ours</b>
+        </figcaption>
+      </figure>
+
+      <!-- Sunday tier hierarchy -->
+      <section class="lineup" aria-labelledby="lineup-title">
+        <header class="lineup__header">
+          <h3 id="lineup-title" class="lineup__title">Sunday&rsquo;s set list</h3>
+          <p class="lineup__sub">August 9 &middot; Golden Gate Park</p>
+        </header>
+
+        <ol class="lineup__board" aria-label="Sunday lineup, billing tier order">
+          <li class="tier tier--1">RÜFÜS DU SOL</li>
+          <li class="tier tier--2">Baby Keem &nbsp;&middot;&nbsp; Empire of the Sun</li>
+          <li class="tier tier--3">Death Cab for Cutie</li>
+          <li class="tier"><span class="tier__rule" aria-hidden="true"></span></li>
+          <li class="tier tier--4">
+            Disco Lines<span class="sep">&middot;</span>
+            Mariah the Scientist<span class="sep">&middot;</span>
+            Boris Brejcha<span class="sep">&middot;</span>
+            JADE<span class="sep">&middot;</span>
+            Boys Noize<span class="sep">&middot;</span>
+            DESTIN CONRAD<span class="sep">&middot;</span>
+            The Temper Trap<span class="sep">&middot;</span>
+            Not for Radio<span class="sep">&middot;</span>
+            Kingfishr<span class="sep">&middot;</span>
+            kwn<span class="sep">&middot;</span>
+            Balu Brigada<span class="sep">&middot;</span>
+            Frost Children<span class="sep">&middot;</span>
+            Miss Monique<span class="sep">&middot;</span>
+            Carlita<span class="sep">&middot;</span>
+            Momma<span class="sep">&middot;</span>
+            Amble<span class="sep">&middot;</span>
+            Sports<span class="sep">&middot;</span>
+            Infinity Song<span class="sep">&middot;</span>
+            Marlon Funaki<span class="sep">&middot;</span>
+            Night Tapes<span class="sep">&middot;</span>
+            X CLUB<span class="sep">&middot;</span>
+            Jim Legxacy<span class="sep">&middot;</span>
+            Sosocamo<span class="sep">&middot;</span>
+            Day We Ran<span class="sep">&middot;</span>
+            Cruz Beckham<span class="sep">&middot;</span>
+            Britton
+          </li>
+        </ol>
+      </section>
+
+      <div class="reveal__divider" aria-hidden="true"></div>
+
+      <p class="reveal__sign">If you want me, if you need me &mdash; I&rsquo;m yours.</p>
+      <p class="reveal__signature">— Jayce</p>
+
+      <div class="reveal__actions">
+        <a class="btn btn--primary"
+           href="https://open.spotify.com/search/Innerbloom%20Rufus%20Du%20Sol"
+           target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M4 2.5v11l9-5.5z"/>
+          </svg>
+          Innerbloom
+        </a>
+        <a class="btn"
+           href="https://sfoutsidelands.com/lineup/#/bb"
+           target="_blank" rel="noopener noreferrer">
+          See the full lineup
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    // SHA-256 of normalized password "ilovemyboyfriend"
+    const PASSWORD_HASH = "7e29e7a068fcb70627b2e8f7795bb0b4f5d587c2fe1270b4f6ff9fe489ed74d5";
+
+    const norm = (s) => (s || "").toLowerCase().replace(/\s+/g, "").trim();
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    // Slow rising embers
+    (function spawnEmbers() {
+      const host = document.getElementById("embers");
+      const count = window.matchMedia("(max-width: 600px)").matches ? 10 : 18;
+      for (let i = 0; i < count; i++) {
+        const e = document.createElement("span");
+        const dur   = 14 + Math.random() * 18;
+        const delay = -Math.random() * dur;
+        const left  = Math.random() * 100;
+        const size  = 2 + Math.random() * 2.5;
+        const hue   = 20 + Math.random() * 30;
+        e.style.left = left + "%";
+        e.style.width = e.style.height = size + "px";
+        e.style.background = `hsl(${hue}, 90%, 65%)`;
+        e.style.animationDuration = dur + "s";
+        e.style.animationDelay = delay + "s";
+        host.appendChild(e);
+      }
+    })();
+
+    const gate  = document.getElementById("gate");
+    const form  = document.getElementById("gateForm");
+    const input = document.getElementById("gateInput");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const hash = await sha256(norm(input.value));
+      if (hash === PASSWORD_HASH) {
+        input.blur();
+        runReveal();
+      } else {
+        gate.classList.remove("shake");
+        void gate.offsetWidth;
+        gate.classList.add("shake");
+        input.value = "";
+        input.focus();
+      }
+    });
+
+    function fadeOut(el, ms) {
+      return new Promise(resolve => {
+        el.style.transition = `opacity ${ms}ms ease, transform ${ms}ms ease, filter ${ms}ms ease`;
+        el.style.opacity = "0";
+        el.style.transform = "translateY(-6px)";
+        el.style.filter = "blur(4px)";
+        setTimeout(resolve, ms);
+      });
+    }
+
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    async function runReveal() {
+      await fadeOut(gate, 900);
+      gate.style.display = "none";
+
+      const beats = [
+        { id: "lyric1", cls: "show",          dur: 5400 },
+        { id: "lyric2", cls: "show",          dur: 5400 },
+        { id: "lyric3", cls: "show--linger",  dur: 7400 },
+      ];
+      for (const b of beats) {
+        const el = document.getElementById(b.id);
+        el.classList.add(b.cls);
+        await sleep(b.dur);
+        el.classList.remove(b.cls);
+      }
+
+      await sleep(400);
+      document.body.classList.add("revealed");
+      document.getElementById("reveal").classList.add("show");
+      window.scrollTo({ top: 0 });
+    }
+  </script>
+</body>
+</html>
