@@ -1060,6 +1060,12 @@
               const fb = document.getElementById("audioFallback");
               if (fb) fb.classList.remove("show");
             }
+            if (e.data === 0) { // ENDED — loop the song from the top
+              try {
+                ytPlayer.seekTo(0, true);
+                ytPlayer.playVideo();
+              } catch (_) { /* ignore */ }
+            }
           },
         },
       });
