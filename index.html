@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://sfoutsidelands.com">
-  <link rel="preconnect" href="https://assets.beatportal.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
@@ -286,12 +285,13 @@
     }
     .reveal__headline {
       font-size: clamp(2.1rem, 8.5vw, 4.4rem);
-      font-weight: 400; line-height: 1.06; letter-spacing: -0.018em;
+      font-weight: 400; line-height: 1.18; letter-spacing: -0.018em;
       animation: fadeUp 1.6s ease 1.5s forwards;
     }
     .reveal__headline em {
       display: inline-block;
       font-style: italic; font-weight: 500;
+      padding-bottom: 0.08em;
       background: linear-gradient(180deg, #fff8e6 0%, #f5a623 55%, #ec4889 100%);
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
@@ -351,8 +351,8 @@
       opacity: 0;
       animation: fadeUp 1.5s ease forwards;
     }
-    .logistics__item:nth-child(1) { animation-delay: 7.5s; }
-    .logistics__item:nth-child(2) { animation-delay: 8.0s; }
+    .logistics__item:nth-child(1) { animation-delay: 6.3s; }
+    .logistics__item:nth-child(2) { animation-delay: 6.8s; }
     .logistics__lead {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -384,94 +384,8 @@
       letter-spacing: 0.005em;
       color: var(--ink);
       margin-block: clamp(0.5rem, 2vw, 1rem);
-      animation: fadeUp 1.6s ease 9.6s forwards;
+      animation: fadeUp 1.6s ease 8.4s forwards;
       opacity: 0;
-    }
-
-    /* ---------- Rufus spotlight ---------- */
-    .spotlight {
-      width: 100%;
-      max-width: 56rem;
-      justify-self: center;
-      margin-block: clamp(0.5rem, 2vw, 1rem);
-      display: grid; gap: clamp(0.85rem, 2.5vw, 1.25rem);
-      text-align: center;
-      animation: fadeUp 1.6s ease 3.9s forwards;
-      opacity: 0;
-    }
-    .spotlight__frame {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 10;
-      max-height: 75vh;
-      border-radius: 16px;
-      overflow: hidden;
-      isolation: isolate;
-      box-shadow:
-        0 50px 110px -45px rgba(245, 166, 35, 0.38),
-        0 30px 70px -30px rgba(160, 31, 91, 0.45),
-        inset 0 0 0 1px var(--ink-line-soft);
-    }
-    .spotlight__frame::before {
-      content: "";
-      position: absolute; inset: -15%;
-      background: radial-gradient(circle, rgba(245, 166, 35, 0.28) 0%, rgba(236, 72, 137, 0.12) 35%, transparent 65%);
-      filter: blur(40px);
-      z-index: -1;
-      pointer-events: none;
-    }
-    .spotlight__frame img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      filter: saturate(1.04) contrast(1.02) brightness(0.96);
-    }
-    .spotlight__frame::after {
-      content: "";
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 90% 95% at 50% 40%, transparent 30%, rgba(7,4,13,0.22) 100%);
-      pointer-events: none;
-      z-index: 1;
-    }
-    .spotlight__overlay {
-      position: absolute; left: 0; right: 0; bottom: 0;
-      padding: clamp(2rem, 6vw, 3rem) clamp(1rem, 4vw, 2rem) clamp(1.5rem, 4.5vw, 2.5rem);
-      display: grid; gap: 0.6rem; justify-items: center;
-      pointer-events: none;
-      z-index: 2;
-      background: linear-gradient(180deg,
-        rgba(7,4,13,0)    0%,
-        rgba(7,4,13,0.65) 30%,
-        rgba(7,4,13,0.92) 60%,
-        rgba(7,4,13,1)    100%);
-    }
-    .spotlight__kicker {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 600;
-      font-size: clamp(0.7rem, 2vw, 0.82rem);
-      letter-spacing: 0.36em;
-      text-transform: uppercase;
-      color: #ffd58a;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-    }
-    .spotlight__title {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 700;
-      font-size: clamp(2.1rem, 9.5vw, 4.8rem);
-      line-height: 1;
-      letter-spacing: 0.04em;
-      color: #ffffff;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.85);
-    }
-    .spotlight__sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      font-size: clamp(1.05rem, 3.4vw, 1.35rem);
-      color: #ffffff;
-      letter-spacing: 0.02em;
-      max-width: 36rem;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.9);
     }
 
     /* ---------- Pull quote ---------- */
@@ -483,7 +397,7 @@
       padding: clamp(2.25rem, 6vw, 3.5rem) clamp(0.5rem, 4vw, 2rem) clamp(2.25rem, 6vw, 3.5rem);
       position: relative;
       text-align: center;
-      animation: fadeUp 1.6s ease 5.1s forwards;
+      animation: fadeUp 1.6s ease 3.9s forwards;
       opacity: 0;
     }
     .quote::before,
@@ -547,7 +461,7 @@
       text-align: center;
     }
     .lineup {
-      animation: fadeUp 1.6s ease 6.3s forwards;
+      animation: fadeUp 1.6s ease 5.1s forwards;
       opacity: 0;
     }
     .lineup__header {
@@ -637,7 +551,7 @@
       display: grid;
       gap: clamp(1.1rem, 3vw, 1.6rem);
       text-align: left;
-      animation: fadeUp 1.6s ease 8.7s forwards;
+      animation: fadeUp 1.6s ease 7.5s forwards;
       opacity: 0;
     }
     .itinerary__header {
@@ -708,13 +622,13 @@
       background: var(--ink-line);
       justify-self: center;
       margin-top: 0.5rem;
-      animation: fadeUp 1.6s ease 10.4s forwards;
+      animation: fadeUp 1.6s ease 9.2s forwards;
     }
     .reveal__sign {
       font-style: italic;
       font-size: clamp(1.25rem, 4.5vw, 1.65rem);
       color: var(--ink);
-      animation: fadeUp 1.6s ease 10.8s forwards;
+      animation: fadeUp 1.6s ease 9.6s forwards;
     }
     .reveal__signature {
       font-family: 'Inter', system-ui, sans-serif;
@@ -722,14 +636,14 @@
       color: var(--ink-faint);
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      animation: fadeUp 1.6s ease 11.4s forwards;
+      animation: fadeUp 1.6s ease 10.2s forwards;
     }
     .reveal__actions {
       display: flex; flex-wrap: wrap;
       gap: 0.75rem;
       justify-content: center;
       margin-top: 0.25rem;
-      animation: fadeUp 1.6s ease 12.0s forwards;
+      animation: fadeUp 1.6s ease 10.8s forwards;
     }
     .btn {
       display: inline-flex; align-items: center; gap: 0.6rem;
@@ -779,7 +693,7 @@
       display: grid;
       gap: clamp(1rem, 4vw, 1.75rem);
       text-align: center;
-      animation: fadeUp 1.6s ease 12.4s forwards;
+      animation: fadeUp 1.6s ease 11.2s forwards;
       opacity: 0;
     }
     .postscript__rule {
@@ -996,23 +910,6 @@
         </figcaption>
       </figure>
 
-      <!-- Rufus du Sol spotlight -->
-      <figure class="spotlight" aria-label="RÜFÜS DU SOL, Sunday's headliner">
-        <div class="spotlight__frame">
-          <img
-            src="https://assets.beatportal.com/images/transforms/content-item/_1920x1080_crop_center-center_none/86132/Rufus-Du-Sol-Beatport-AOTM-1718806956.webp"
-            alt="RÜFÜS DU SOL performing live"
-            loading="lazy"
-            decoding="async"
-          >
-          <figcaption class="spotlight__overlay">
-            <span class="spotlight__kicker">Sunday's headliner</span>
-            <span class="spotlight__title">RÜFÜS DU SOL</span>
-            <span class="spotlight__sub">Closing Sunday night, live in Golden Gate Park.</span>
-          </figcaption>
-        </div>
-      </figure>
-
       <!-- Favourite Rufus passage -->
       <aside class="quote" aria-label="A line from RÜFÜS DU SOL, Until the Sun Needs to Rise">
         <blockquote class="quote__body">
@@ -1073,7 +970,7 @@
       <section class="logistics" aria-label="What's covered">
         <div class="logistics__item">
           <h3 class="logistics__lead">On me.</h3>
-          <p class="logistics__body">Your flight, both ways, paid in full. Just say yes.</p>
+          <p class="logistics__body">Your flight, both ways, paid in full.</p>
         </div>
         <div class="logistics__item">
           <h3 class="logistics__lead">With us.</h3>
