@@ -1084,23 +1084,20 @@
       ytPlayer = new YT.Player("ytplayer", {
         height: "180", width: "320",
         videoId: INNERBLOOM.videoId,
+        // youtube-nocookie reduces tracking and tends to be lighter on
+        // pre-roll ads than the standard youtube.com embed.
+        host: "https://www.youtube-nocookie.com",
         playerVars: {
-          // Browsers always allow MUTED autoplay; we start muted at page load
-          // so playback is already running by the time the password is submitted.
-          // The submit gesture then unmutes via doPlay(), which is reliable.
-          autoplay: 1, mute: 1,
+          // Do NOT autoplay on page load — a muted preroll tells YouTube the
+          // video is "playing" and triggers a pre-roll ad that the user then
+          // hears the moment we unmute. Wait for the password gesture instead.
+          autoplay: 0,
           controls: 0, disablekb: 1, fs: 0,
           iv_load_policy: 3, modestbranding: 1, playsinline: 1,
           rel: 0, start: INNERBLOOM.start,
         },
         events: {
-          onReady: () => {
-            ytReady = true;
-            // Belt-and-suspenders: kick muted playback even if the autoplay
-            // playerVar was ignored. Muted playVideo() is allowed without a gesture.
-            try { ytPlayer.mute(); ytPlayer.playVideo(); } catch (_) {}
-            if (pendingPlay) doPlay();
-          },
+          onReady: () => { ytReady = true; if (pendingPlay) doPlay(); },
           onStateChange: (e) => {
             if (e.data === 1) { // PLAYING
               const fb = document.getElementById("audioFallback");
@@ -1320,10 +1317,10 @@
 
       // Hold a beat before lyric 1, lyrics 2 and 3 still land at the
       // same absolute moments because lyric 1's dur is trimmed to match.
-      await sleep(250);
+      await sleep(750);
 
       const beats = [
-        { id: "lyric1", dur: 4950 },
+        { id: "lyric1", dur: 4450 },
         { id: "lyric2", dur: 4100 },
         { id: "lyric3", dur: 3700 },
       ];
