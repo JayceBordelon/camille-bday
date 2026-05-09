@@ -200,10 +200,23 @@
     }
     .lyric.show { animation: lyricCycle var(--dur, 5.4s) ease-in-out forwards; }
     @keyframes lyricCycle {
-      0%   { opacity: 0; transform: translateY(10px); filter: blur(8px); }
-      22%  { opacity: 1; transform: translateY(0);    filter: blur(0); }
+      0%   { opacity: 1; transform: translateY(0);    filter: blur(0); }
       78%  { opacity: 1; transform: translateY(0);    filter: blur(0); }
       100% { opacity: 0; transform: translateY(-10px); filter: blur(5px); }
+    }
+    .lyric .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(8px);
+    }
+    .lyric .word + .word { margin-left: 0.28em; }
+    .lyric.show .word {
+      animation: wordIn 0.55s cubic-bezier(.2,.8,.2,1) forwards;
+      animation-delay: calc(var(--i, 0) * 0.32s);
+    }
+    @keyframes wordIn {
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
 
     /* ---------- Reveal ---------- */
@@ -877,9 +890,9 @@
     </section>
 
     <!-- ---------- Lyric beats ---------- -->
-    <section class="lyric" id="lyric1" aria-hidden="true">If you want me&hellip;</section>
-    <section class="lyric" id="lyric2" aria-hidden="true">If you need me&hellip;</section>
-    <section class="lyric" id="lyric3" aria-hidden="true">I&rsquo;m yours.</section>
+    <section class="lyric" id="lyric1" aria-hidden="true"><span class="word" style="--i:0">If</span><span class="word" style="--i:1">you</span><span class="word" style="--i:2">want</span><span class="word" style="--i:3">me&hellip;</span></section>
+    <section class="lyric" id="lyric2" aria-hidden="true"><span class="word" style="--i:0">If</span><span class="word" style="--i:1">you</span><span class="word" style="--i:2">need</span><span class="word" style="--i:3">me&hellip;</span></section>
+    <section class="lyric" id="lyric3" aria-hidden="true"><span class="word" style="--i:0">I&rsquo;m</span><span class="word" style="--i:1">yours.</span></section>
 
     <!-- ---------- Reveal ---------- -->
     <section class="reveal" id="reveal" aria-live="polite">
