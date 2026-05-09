@@ -160,6 +160,49 @@
       font-family: 'Inter', system-ui, sans-serif;
       letter-spacing: 0.06em; max-width: 22rem; line-height: 1.55;
     }
+    .hint-card {
+      display: grid;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 30rem;
+      margin: 0.4rem auto 0;
+      padding: clamp(0.85rem, 2.6vw, 1.05rem) clamp(1rem, 3vw, 1.25rem);
+      border: 1px solid rgba(245, 166, 35, 0.42);
+      border-radius: 12px;
+      background: linear-gradient(180deg,
+        rgba(245, 166, 35, 0.10),
+        rgba(160, 31, 91, 0.05));
+      box-shadow: 0 12px 28px -22px rgba(245, 166, 35, 0.55);
+      text-align: left;
+    }
+    .hint-card__label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 0.7rem;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--bg-sun);
+    }
+    .hint-card__label::before {
+      content: "";
+      display: inline-block;
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: var(--bg-sun);
+      box-shadow: 0 0 12px 2px rgba(245, 166, 35, 0.55);
+    }
+    .hint-card__body {
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1rem, 3vw, 1.18rem);
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
     .gate__error {
       display: none;
       margin: 0;
@@ -898,7 +941,7 @@
     <!-- ---------- Reveal ---------- -->
     <section class="reveal" id="reveal" aria-live="polite">
 
-      <p class="reveal__opener">For your birthday, Camille &mdash;</p>
+      <p class="reveal__opener">For your birthday, Camille.</p>
 
       <h2 class="reveal__headline">
         I got us <em>Sunday passes</em><br>to Outside Lands.
@@ -994,7 +1037,7 @@
       <!-- Logistics: flight + lodging -->
       <div class="reveal__details">
         <p class="highlight"><strong>I&rsquo;m buying your flight.</strong> Both ways, paid in full. Just say yes.</p>
-        <p class="highlight"><strong>Kade &amp; Lauren are staying with us</strong> at my apartment all weekend &mdash; the four of us, together.</p>
+        <p class="highlight"><strong>Kade &amp; Lauren are staying with us</strong> at my apartment all weekend.</p>
       </div>
 
       <!-- Morning pregame -->
@@ -1003,7 +1046,7 @@
         <h3 class="invite__title">Rooftop pregame at my apartment.</h3>
         <div class="invite__body">
           <p>Before we head over to the park, I&rsquo;m hosting on the roof.</p>
-          <p>Your family&rsquo;s invited too &mdash; if they make the trip out, bring them up.</p>
+          <p>Your family&rsquo;s invited too. If they make the trip out, bring them up.</p>
         </div>
       </aside>
 
@@ -1057,7 +1100,10 @@
             <button class="gate__submit" type="submit">Read</button>
           </form>
           <p class="gate__error" id="poemError" role="alert" aria-live="polite">Not quite. Try again.</p>
-          <p class="gate__hint-small">Two roots, fused into one word: the self, and where things begin.</p>
+          <aside class="hint-card" role="note">
+            <span class="hint-card__label">Hint</span>
+            <p class="hint-card__body">Two roots, fused into one word: the self, and where things begin.</p>
+          </aside>
         </div>
 
         <article class="poem" id="poem" aria-live="polite"></article>
@@ -1088,7 +1134,7 @@
         // pre-roll ads than the standard youtube.com embed.
         host: "https://www.youtube-nocookie.com",
         playerVars: {
-          // Do NOT autoplay on page load — a muted preroll tells YouTube the
+          // Do NOT autoplay on page load. A muted preroll tells YouTube the
           // video is "playing" and triggers a pre-roll ad that the user then
           // hears the moment we unmute. Wait for the password gesture instead.
           autoplay: 0,
@@ -1103,7 +1149,7 @@
               const fb = document.getElementById("audioFallback");
               if (fb) fb.classList.remove("show");
             }
-            if (e.data === 0) { // ENDED — loop the song from the top
+            if (e.data === 0) { // ENDED. Loop the song from the top
               try {
                 ytPlayer.seekTo(0, true);
                 ytPlayer.playVideo();
