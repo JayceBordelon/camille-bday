@@ -9,8 +9,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="preconnect" href="https://sfoutsidelands.com">
+  <link rel="preconnect" href="https://assets.beatportal.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
@@ -312,14 +312,12 @@
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
-      filter: saturate(1.05) contrast(1.04) brightness(0.85);
+      filter: saturate(1.02) contrast(1.02) brightness(0.92);
     }
     .reveal__hero::after {
       content: "";
       position: absolute; inset: 0;
-      background:
-        linear-gradient(180deg, rgba(7,4,13,0.35) 0%, rgba(7,4,13,0) 35%, rgba(7,4,13,0.55) 100%),
-        linear-gradient(180deg, rgba(160,31,91,0.22), rgba(216,83,26,0.18));
+      background: linear-gradient(180deg, rgba(7,4,13,0) 55%, rgba(7,4,13,0.7) 100%);
       pointer-events: none;
     }
     .reveal__hero-caption {
@@ -425,13 +423,13 @@
     .spotlight__frame img {
       width: 100%; height: 100%;
       object-fit: cover;
-      object-position: center 35%;
-      filter: saturate(1.12) contrast(1.06) brightness(0.95);
+      object-position: center center;
+      filter: saturate(1.04) contrast(1.02) brightness(0.96);
     }
     .spotlight__frame::after {
       content: "";
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 90% at 50% 45%, transparent 0%, rgba(7,4,13,0.35) 100%);
+      background: radial-gradient(ellipse 90% 95% at 50% 40%, transparent 30%, rgba(7,4,13,0.22) 100%);
       pointer-events: none;
       z-index: 1;
     }
@@ -986,8 +984,8 @@
 
       <figure class="reveal__hero" aria-hidden="false">
         <img
-          src="https://images.unsplash.com/photo-1715390321213-c8d88b3e024a?w=1800&q=80&auto=format&fit=crop"
-          alt="The Golden Gate at sunset, San Francisco"
+          src="https://sfoutsidelands.com/img/containers/assets/images/outsidelands2021_1030_205445-8590_alivecoverage.jpg/d6bb88c7cb5d27e726d603c4e9ba6d74/outsidelands2021_1030_205445-8590_alivecoverage.jpg"
+          alt="Outside Lands festival in Golden Gate Park"
           loading="eager"
           decoding="async"
           fetchpriority="high"
@@ -1002,7 +1000,7 @@
       <figure class="spotlight" aria-label="RÜFÜS DU SOL, Sunday's headliner">
         <div class="spotlight__frame">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/1/18/Rufus_Du_Sol_%2829357069668%29.jpg"
+            src="https://assets.beatportal.com/images/transforms/content-item/_1920x1080_crop_center-center_none/86132/Rufus-Du-Sol-Beatport-AOTM-1718806956.webp"
             alt="RÜFÜS DU SOL performing live"
             loading="lazy"
             decoding="async"
