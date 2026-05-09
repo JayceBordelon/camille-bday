@@ -285,7 +285,7 @@
       font-size: clamp(0.92rem, 3vw, 1rem);
       color: var(--ink-soft);
       letter-spacing: 0.025em; line-height: 1.65;
-      animation: fadeUp 1.6s ease 3.9s forwards;
+      animation: fadeUp 1.6s ease 7.5s forwards;
     }
     .reveal__details strong { color: var(--ink); font-weight: 500; }
     .reveal__details .highlight {
@@ -321,7 +321,7 @@
       letter-spacing: 0.005em;
       color: var(--ink);
       margin-block: clamp(0.5rem, 2vw, 1rem);
-      animation: fadeUp 1.6s ease 4.5s forwards;
+      animation: fadeUp 1.6s ease 9.6s forwards;
       opacity: 0;
     }
     .reveal__birthday::before,
@@ -343,7 +343,7 @@
       margin-block: clamp(0.5rem, 2vw, 1rem);
       display: grid; gap: clamp(0.85rem, 2.5vw, 1.25rem);
       text-align: center;
-      animation: fadeUp 1.6s ease 5.1s forwards;
+      animation: fadeUp 1.6s ease 3.9s forwards;
       opacity: 0;
     }
     .spotlight__frame {
@@ -432,7 +432,7 @@
       text-align: center;
       border-top: 1px solid var(--ink-line-soft);
       border-bottom: 1px solid var(--ink-line-soft);
-      animation: fadeUp 1.6s ease 6.3s forwards;
+      animation: fadeUp 1.6s ease 5.1s forwards;
       opacity: 0;
     }
     .quote::before {
@@ -487,7 +487,7 @@
       text-align: center;
     }
     .lineup {
-      animation: fadeUp 1.6s ease 7.5s forwards;
+      animation: fadeUp 1.6s ease 6.3s forwards;
       opacity: 0;
     }
     .lineup__header {
@@ -576,7 +576,7 @@
         rgba(160, 31, 91, 0.04));
       display: grid;
       gap: 0.7rem;
-      animation: fadeUp 1.6s ease 8.7s forwards;
+      animation: fadeUp 1.6s ease 8.4s forwards;
       opacity: 0;
     }
     .invite__kicker {
@@ -616,13 +616,13 @@
       background: var(--ink-line);
       justify-self: center;
       margin-top: 0.5rem;
-      animation: fadeUp 1.6s ease 10.0s forwards;
+      animation: fadeUp 1.6s ease 10.4s forwards;
     }
     .reveal__sign {
       font-style: italic;
       font-size: clamp(1.25rem, 4.5vw, 1.65rem);
       color: var(--ink);
-      animation: fadeUp 1.6s ease 10.4s forwards;
+      animation: fadeUp 1.6s ease 10.8s forwards;
     }
     .reveal__signature {
       font-family: 'Inter', system-ui, sans-serif;
@@ -630,14 +630,14 @@
       color: var(--ink-faint);
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      animation: fadeUp 1.6s ease 11.0s forwards;
+      animation: fadeUp 1.6s ease 11.4s forwards;
     }
     .reveal__actions {
       display: flex; flex-wrap: wrap;
       gap: 0.75rem;
       justify-content: center;
       margin-top: 0.25rem;
-      animation: fadeUp 1.6s ease 11.6s forwards;
+      animation: fadeUp 1.6s ease 12.0s forwards;
     }
     .btn {
       display: inline-flex; align-items: center; gap: 0.6rem;
@@ -687,7 +687,7 @@
       display: grid;
       gap: clamp(1rem, 4vw, 1.75rem);
       text-align: center;
-      animation: fadeUp 1.6s ease 12.0s forwards;
+      animation: fadeUp 1.6s ease 12.4s forwards;
       opacity: 0;
     }
     .postscript__rule {
@@ -904,15 +904,6 @@
         </figcaption>
       </figure>
 
-      <div class="reveal__details">
-        <p><strong>Outside Lands &middot; Sunday, August 9, 2026</strong></p>
-        <p>RÜFÜS DU SOL is closing the night you&rsquo;ve been waiting for.</p>
-        <p class="highlight"><strong>I&rsquo;m buying your flight.</strong> Paid in full, both ways. Just bring yourself.</p>
-        <p class="highlight"><strong>Kade &amp; Lauren are staying with us</strong> at my apartment all weekend. The four of us, the whole thing.</p>
-      </div>
-
-      <p class="reveal__birthday">Happy birthday, my love.</p>
-
       <!-- Rufus du Sol spotlight -->
       <figure class="spotlight" aria-label="RÜFÜS DU SOL, Sunday's headliner">
         <div class="spotlight__frame">
@@ -986,6 +977,12 @@
         </ol>
       </section>
 
+      <!-- Logistics: flight + lodging -->
+      <div class="reveal__details">
+        <p class="highlight"><strong>I&rsquo;m buying your flight.</strong> Paid in full, both ways. Just bring yourself.</p>
+        <p class="highlight"><strong>Kade &amp; Lauren are staying with us</strong> at my apartment all weekend. The four of us, the whole thing.</p>
+      </div>
+
       <!-- Morning pregame -->
       <aside class="invite" aria-label="Sunday morning pregame on the rooftop">
         <p class="invite__kicker">Sunday morning</p>
@@ -995,6 +992,8 @@
           <p>If your family ends up making the trip, they&rsquo;re all invited too. The whole crew, up there with us.</p>
         </div>
       </aside>
+
+      <p class="reveal__birthday">Happy birthday, my love.</p>
 
       <div class="reveal__divider" aria-hidden="true"></div>
 
@@ -1302,7 +1301,7 @@
       const beats = [
         { id: "lyric1", dur: 4950 },
         { id: "lyric2", dur: 4100 },
-        { id: "lyric3", dur: 7400 },
+        { id: "lyric3", dur: 3700 },
       ];
       for (const b of beats) {
         const el = document.getElementById(b.id);
