@@ -335,38 +335,46 @@
     }
     .reveal__hero-caption .accent { font-size: 0.95em; color: var(--bg-sun); }
 
-    /* Details strip */
-    .reveal__details {
-      display: grid; gap: 0.55rem;
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: clamp(0.92rem, 3vw, 1rem);
-      color: var(--ink-soft);
-      letter-spacing: 0.025em; line-height: 1.65;
-      animation: fadeUp 1.6s ease 7.5s forwards;
+    /* Logistics: leads + prose, no boxed card */
+    .logistics {
+      width: 100%;
+      max-width: 38rem;
+      justify-self: center;
+      margin-block: clamp(1.75rem, 5vw, 2.75rem);
+      display: grid;
+      gap: clamp(1.5rem, 4.5vw, 2.5rem);
+      text-align: center;
+      /* container stays visible; children stagger in via .logistics__item delays */
+      opacity: 1;
     }
-    .reveal__details strong { color: var(--ink); font-weight: 500; }
-    .reveal__details .highlight {
-      margin: 0.85rem auto 0.25rem;
-      padding: clamp(0.85rem, 2.5vw, 1.05rem) clamp(1rem, 3vw, 1.25rem);
-      max-width: 32rem;
-      border: 1px solid rgba(245, 166, 35, 0.32);
-      border-radius: 12px;
-      background: linear-gradient(180deg,
-        rgba(245, 166, 35, 0.10),
-        rgba(160, 31, 91, 0.05));
+    .logistics__item {
+      display: grid;
+      gap: 0.35rem;
+      opacity: 0;
+      animation: fadeUp 1.5s ease forwards;
+    }
+    .logistics__item:nth-child(1) { animation-delay: 7.5s; }
+    .logistics__item:nth-child(2) { animation-delay: 8.0s; }
+    .logistics__lead {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-weight: 500;
-      font-size: clamp(1.05rem, 3.4vw, 1.3rem);
-      line-height: 1.45;
-      letter-spacing: 0.005em;
-      color: var(--ink);
-    }
-    .reveal__details .highlight strong {
-      color: var(--bg-sun);
       font-weight: 600;
+      font-size: clamp(2.1rem, 9vw, 3.4rem);
+      line-height: 1;
+      letter-spacing: -0.005em;
+      background: linear-gradient(180deg, #fff8e6 0%, #f5a623 60%, #ec4889 100%);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+    }
+    .logistics__body {
+      font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      letter-spacing: 0.005em;
+      font-weight: 400;
+      font-size: clamp(1.05rem, 3.2vw, 1.25rem);
+      line-height: 1.5;
+      color: var(--ink-soft);
+      max-width: 28rem;
+      margin: 0 auto;
     }
 
     .reveal__birthday {
@@ -481,30 +489,37 @@
     /* ---------- Pull quote ---------- */
     .quote {
       width: 100%;
-      max-width: 44rem;
+      max-width: 42rem;
       justify-self: center;
-      margin-block: clamp(0.75rem, 3vw, 1.5rem);
-      padding: clamp(1.75rem, 5vw, 3rem) clamp(1.25rem, 5vw, 2.5rem) clamp(1.5rem, 4.5vw, 2.5rem);
+      margin-block: clamp(2rem, 6vw, 3.5rem);
+      padding: clamp(2.25rem, 6vw, 3.5rem) clamp(0.5rem, 4vw, 2rem) clamp(2.25rem, 6vw, 3.5rem);
       position: relative;
       text-align: center;
-      border-top: 1px solid var(--ink-line-soft);
-      border-bottom: 1px solid var(--ink-line-soft);
       animation: fadeUp 1.6s ease 5.1s forwards;
       opacity: 0;
     }
-    .quote::before {
-      content: "\201C";
+    .quote::before,
+    .quote::after {
       position: absolute;
-      top: -0.18em;
-      left: 50%;
-      transform: translateX(-50%);
       font-family: 'Cormorant Garamond', serif;
       font-weight: 500;
-      font-size: clamp(4.5rem, 14vw, 7.5rem);
-      line-height: 1;
-      color: rgba(245, 166, 35, 0.20);
+      font-size: clamp(4rem, 14vw, 7.5rem);
+      line-height: 0.7;
+      color: rgba(245, 166, 35, 0.28);
       pointer-events: none;
       user-select: none;
+    }
+    .quote::before {
+      content: "\201C";
+      top: 0;
+      left: clamp(-0.25rem, 1vw, 0.5rem);
+      transform: rotate(-7deg);
+    }
+    .quote::after {
+      content: "\201D";
+      bottom: 0;
+      right: clamp(-0.25rem, 1vw, 0.5rem);
+      transform: rotate(7deg);
     }
     .quote__body {
       font-family: 'Cormorant Garamond', serif;
@@ -568,11 +583,18 @@
     .lineup__board {
       list-style: none;
       display: grid;
-      gap: clamp(0.75rem, 2.5vw, 1.5rem);
-      padding: clamp(1.25rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
-      border: 1px solid var(--ink-line-soft);
-      border-radius: 14px;
-      background: linear-gradient(180deg, rgba(255, 247, 230, 0.04), rgba(160, 31, 91, 0.05));
+      gap: clamp(0.85rem, 2.6vw, 1.5rem);
+      padding: clamp(1rem, 3vw, 1.75rem) 0;
+      position: relative;
+    }
+    .lineup__board::before,
+    .lineup__board::after {
+      content: "";
+      display: block;
+      width: clamp(40px, 18vw, 80px);
+      height: 1px;
+      background: var(--ink-line);
+      margin-inline: auto;
     }
 
     .tier { line-height: 1.18; }
@@ -618,54 +640,79 @@
       margin: 0.5rem auto 0;
     }
 
-    /* ---------- Morning pregame card ---------- */
-    .invite {
+    /* ---------- Sunday itinerary ---------- */
+    .itinerary {
       width: 100%;
-      max-width: 38rem;
+      max-width: 42rem;
       justify-self: center;
-      margin-block: clamp(0.75rem, 3vw, 1.5rem);
-      padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.25rem, 4vw, 2rem);
-      text-align: center;
-      border: 1px solid var(--ink-line-soft);
-      border-radius: 14px;
-      background: linear-gradient(180deg,
-        rgba(245, 166, 35, 0.07),
-        rgba(160, 31, 91, 0.04));
+      margin-block: clamp(2rem, 5vw, 3rem);
       display: grid;
-      gap: 0.7rem;
-      animation: fadeUp 1.6s ease 8.4s forwards;
+      gap: clamp(1.1rem, 3vw, 1.6rem);
+      text-align: left;
+      animation: fadeUp 1.6s ease 8.7s forwards;
       opacity: 0;
     }
-    .invite__kicker {
+    .itinerary__header {
+      display: grid;
+      gap: 0.4rem;
+      text-align: center;
+      justify-items: center;
+    }
+    .itinerary__kicker {
       font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 500;
+      font-weight: 600;
       font-size: 0.72rem;
-      letter-spacing: 0.32em;
+      letter-spacing: 0.36em;
       text-transform: uppercase;
       color: var(--bg-sun);
     }
-    .invite__title {
+    .itinerary__title {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 500;
-      font-size: clamp(1.5rem, 5vw, 2.1rem);
+      font-size: clamp(1.55rem, 5vw, 2.2rem);
       letter-spacing: 0.005em;
-      line-height: 1.15;
       color: var(--ink);
     }
-    .invite__body {
+    .itinerary__list {
+      list-style: none;
+      display: grid;
+      gap: 0;
+      padding: 0;
+      margin: 0;
+    }
+    .itinerary__row {
+      display: grid;
+      grid-template-columns: clamp(5.5rem, 22vw, 8rem) 1fr;
+      gap: clamp(0.85rem, 3vw, 1.5rem);
+      align-items: baseline;
+      padding-block: clamp(0.7rem, 2vw, 0.95rem);
+      border-bottom: 1px solid var(--ink-line-soft);
+    }
+    .itinerary__row:last-child { border-bottom: 0; }
+    .itinerary__when {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 600;
+      font-size: clamp(0.7rem, 2.2vw, 0.78rem);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--bg-sun);
+    }
+    .itinerary__what {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 400;
-      font-size: clamp(1.02rem, 3.2vw, 1.2rem);
-      line-height: 1.55;
+      font-size: clamp(1.05rem, 3vw, 1.2rem);
+      line-height: 1.45;
       color: var(--ink-soft);
-      max-width: 30rem;
-      margin-inline: auto;
-      display: grid;
-      gap: 0.5rem;
     }
-    .invite__body p { margin: 0; }
+    @media (max-width: 480px) {
+      .itinerary__row {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+        padding-block: 0.75rem;
+      }
+    }
 
     /* ---------- Closing ---------- */
     .reveal__divider {
@@ -1034,21 +1081,39 @@
         </ol>
       </section>
 
-      <!-- Logistics: flight + lodging -->
-      <div class="reveal__details">
-        <p class="highlight"><strong>I&rsquo;m buying your flight.</strong> Both ways, paid in full. Just say yes.</p>
-        <p class="highlight"><strong>Kade &amp; Lauren are staying with us</strong> at my apartment all weekend.</p>
-      </div>
-
-      <!-- Morning pregame -->
-      <aside class="invite" aria-label="Sunday morning pregame on the rooftop">
-        <p class="invite__kicker">Sunday morning</p>
-        <h3 class="invite__title">Rooftop pregame at my apartment.</h3>
-        <div class="invite__body">
-          <p>Before we head over to the park, I&rsquo;m hosting on the roof.</p>
-          <p>Your family&rsquo;s invited too. If they make the trip out, bring them up.</p>
+      <!-- Logistics: flight + lodging, leads + prose -->
+      <section class="logistics" aria-label="What's covered">
+        <div class="logistics__item">
+          <h3 class="logistics__lead">On me.</h3>
+          <p class="logistics__body">Your flight, both ways, paid in full. Just say yes.</p>
         </div>
-      </aside>
+        <div class="logistics__item">
+          <h3 class="logistics__lead">With us.</h3>
+          <p class="logistics__body">Kade &amp; Lauren are staying at my apartment all weekend.</p>
+        </div>
+      </section>
+
+      <!-- Sunday itinerary -->
+      <section class="itinerary" aria-label="Sunday plan">
+        <header class="itinerary__header">
+          <p class="itinerary__kicker">The plan</p>
+          <h3 class="itinerary__title">Sunday, August 9</h3>
+        </header>
+        <ol class="itinerary__list">
+          <li class="itinerary__row">
+            <span class="itinerary__when">Morning</span>
+            <span class="itinerary__what">Rooftop pregame at my apartment. Your family&rsquo;s welcome up.</span>
+          </li>
+          <li class="itinerary__row">
+            <span class="itinerary__when">Afternoon</span>
+            <span class="itinerary__what">We head to Golden Gate Park.</span>
+          </li>
+          <li class="itinerary__row">
+            <span class="itinerary__when">Night</span>
+            <span class="itinerary__what">Rufus closes Sunday under the lights.</span>
+          </li>
+        </ol>
+      </section>
 
       <p class="reveal__birthday">Happy birthday, my love.</p>
 
