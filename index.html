@@ -52,13 +52,19 @@
     }
 
     /* ---------- Sky ---------- */
+    /* The sky is position:fixed and content scrolls through it. Whatever
+       luminance the warm radials hit at the bottom of the viewport, every
+       text element will eventually scroll through that band. Keep the warm
+       sunset hint, but mute the alpha + push the sun further offscreen so
+       the band reads as a distant afterglow, not a bright stripe that
+       washes out gradient text. */
     .sky {
       position: fixed; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 90% 55% at 50% 110%, var(--bg-sun) 0%, transparent 38%),
-        radial-gradient(ellipse 110% 65% at 50% 95%,  var(--bg-warm) 0%, transparent 50%),
-        radial-gradient(ellipse 130% 80% at 50% 75%,  var(--bg-glow) 0%, transparent 62%),
-        linear-gradient(180deg, var(--bg-base) 0%, var(--bg-deep) 45%, var(--bg-mid) 80%, var(--bg-glow) 100%);
+        radial-gradient(ellipse 72% 38% at 50% 122%, rgba(245, 166, 35, 0.45) 0%, transparent 62%),
+        radial-gradient(ellipse 95% 55% at 50% 104%, rgba(216, 83, 26, 0.38) 0%, transparent 62%),
+        radial-gradient(ellipse 130% 80% at 50% 78%, rgba(160, 31, 91, 0.42) 0%, transparent 66%),
+        linear-gradient(180deg, var(--bg-base) 0%, var(--bg-deep) 50%, #2a0e3e 90%, #1f0a2e 100%);
       animation: drift 28s ease-in-out infinite alternate;
       will-change: transform, filter;
     }
@@ -364,9 +370,7 @@
       -webkit-background-clip: text; background-clip: text;
       color: transparent;
       /* drop-shadow respects the background-clip:text glyph shape, unlike
-         text-shadow which paints behind the (transparent) text color. Gives
-         dark separation against the warm part of the sky gradient where the
-         logistics section sits. */
+         text-shadow which paints behind the (transparent) text color. */
       filter: drop-shadow(0 2px 14px rgba(7, 4, 13, 0.65));
     }
     .logistics__body {
