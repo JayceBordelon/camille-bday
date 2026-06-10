@@ -3,43 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0a0612">
+  <meta name="theme-color" content="#060d20">
   <meta name="robots" content="noindex,nofollow">
   <title>Open me.</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://sfoutsidelands.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..700;1,9..144,200..700&family=Marcellus&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-base:   #07040d;
-      --bg-deep:   #1a0a2e;
-      --bg-mid:    #4a1247;
-      --bg-glow:   #a01f5b;
-      --bg-warm:   #d8531a;
-      --bg-sun:    #f5a623;
-      --ink:       #fff4dc;
-      --ink-soft:  rgba(255, 244, 220, 0.94);
-      --ink-faint: rgba(255, 244, 220, 0.62);
-      --ink-line:  rgba(255, 244, 220, 0.30);
-      --ink-line-soft: rgba(255, 244, 220, 0.14);
+      --night-abyss: #030712;
+      --night-deep:  #060d20;
+      --night:       #0b1430;
+      --night-soft:  #111c3e;
+      --moon:        #f3f5fb;
+      --moon-soft:   rgba(243, 245, 251, 0.93);
+      --moon-faint:  rgba(228, 233, 248, 0.74);
+      --moon-line:   rgba(214, 222, 244, 0.34);
+      --moon-line-soft: rgba(214, 222, 244, 0.15);
+      --lavender:        #c9bbf7;
+      --lavender-bright: #ddd2fd;
+      --blush:           #f6b9c9;
+      --blush-bright:    #ffccd9;
+      --star:            #e3eaff;
+      --firefly:         #edf5bb;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     html, body { height: 100%; }
     body {
-      background: var(--bg-base);
-      color: var(--ink);
-      font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      background: var(--night-abyss);
+      color: var(--moon);
+      font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+      font-weight: 340;
       overflow-x: hidden;
       overflow-y: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
-      text-shadow: 0 1px 6px rgba(7, 4, 13, 0.55), 0 0 1px rgba(7, 4, 13, 0.4);
+      text-shadow: 0 1px 8px rgba(3, 7, 18, 0.6), 0 0 1px rgba(3, 7, 18, 0.45);
     }
     body.revealed { overflow-y: auto; }
 
@@ -51,46 +56,121 @@
       }
     }
 
-    /* ---------- Sky ---------- */
-    /* The sky is position:fixed and content scrolls through it. Whatever
-       luminance the warm radials hit at the bottom of the viewport, every
-       text element will eventually scroll through that band. Keep the warm
-       sunset hint, but mute the alpha + push the sun further offscreen so
-       the band reads as a distant afterglow, not a bright stripe that
-       washes out gradient text. */
+    /* ---------- Night sky ---------- */
+    /* Fixed sky; content scrolls through it. Every gradient stop is kept
+       deep so the brightest band the page ever shows stays far below the
+       luminance where moonlit text would lose AA contrast. The lavender
+       and rose garden-haze radials are deliberately low alpha. */
     .sky {
       position: fixed; inset: 0; z-index: 0;
       background:
-        radial-gradient(ellipse 72% 38% at 50% 122%, rgba(245, 166, 35, 0.45) 0%, transparent 62%),
-        radial-gradient(ellipse 95% 55% at 50% 104%, rgba(216, 83, 26, 0.38) 0%, transparent 62%),
-        radial-gradient(ellipse 130% 80% at 50% 78%, rgba(160, 31, 91, 0.42) 0%, transparent 66%),
-        linear-gradient(180deg, var(--bg-base) 0%, var(--bg-deep) 50%, #2a0e3e 90%, #1f0a2e 100%);
-      animation: drift 28s ease-in-out infinite alternate;
+        radial-gradient(ellipse 56% 36% at 76% -4%, rgba(216, 228, 255, 0.13) 0%, transparent 62%),
+        radial-gradient(ellipse 90% 58% at 18% 112%, rgba(122, 88, 176, 0.17) 0%, transparent 64%),
+        radial-gradient(ellipse 78% 48% at 88% 102%, rgba(192, 104, 142, 0.11) 0%, transparent 60%),
+        linear-gradient(180deg, var(--night-abyss) 0%, #071026 36%, var(--night) 68%, #0a122c 100%);
+      animation: skyDrift 36s ease-in-out infinite alternate;
       will-change: transform, filter;
     }
-    @keyframes drift {
-      0%   { transform: translateY(0)     scale(1.00); filter: hue-rotate(0deg)  saturate(1); }
-      100% { transform: translateY(-1.8%) scale(1.05); filter: hue-rotate(10deg) saturate(1.1); }
+    @keyframes skyDrift {
+      0%   { transform: translateY(0)     scale(1.00); filter: hue-rotate(0deg)   saturate(1); }
+      100% { transform: translateY(-1.6%) scale(1.04); filter: hue-rotate(-8deg)  saturate(1.08); }
     }
     .grain {
       position: fixed; inset: -50%; z-index: 1; pointer-events: none;
-      opacity: 0.06; mix-blend-mode: overlay;
+      opacity: 0.05; mix-blend-mode: overlay;
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='0.65'/></svg>");
     }
-    .embers { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
-    .embers span {
-      position: absolute; bottom: -20px;
-      width: 3px; height: 3px; border-radius: 50%;
-      box-shadow: 0 0 8px 1px rgba(245, 166, 35, 0.6);
+
+    /* Stars and fireflies live below the content layer (z-index 1 vs
+       main's 2) so particles can never sit on top of text. */
+    .stars { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .stars span {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--star);
+      box-shadow: 0 0 6px 1px rgba(199, 212, 255, 0.45);
+      opacity: 0.2;
+      animation: twinkle var(--tw, 4.5s) ease-in-out var(--twd, 0s) infinite;
+      will-change: opacity, transform;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.14; transform: scale(0.75); }
+      50%      { opacity: 0.85; transform: scale(1); }
+    }
+
+    .fireflies { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .fireflies span {
+      position: absolute; bottom: -24px;
+      border-radius: 50%;
+      background: var(--firefly);
+      box-shadow: 0 0 12px 2px rgba(233, 242, 176, 0.5);
       opacity: 0;
-      animation: rise linear infinite;
+      animation: fireflyDrift linear infinite;
       will-change: transform, opacity;
     }
-    @keyframes rise {
-      0%   { transform: translateY(0)      scale(1);   opacity: 0; }
-      10%  { opacity: 0.6; }
-      90%  { opacity: 0.4; }
-      100% { transform: translateY(-110vh) scale(0.4); opacity: 0; }
+    @keyframes fireflyDrift {
+      0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+      6%   { opacity: 0.85; }
+      18%  { opacity: 0.15; }
+      30%  { opacity: 0.8; transform: translate3d(var(--sway, 2vw), -24vh, 0) scale(0.95); }
+      44%  { opacity: 0.1; }
+      58%  { opacity: 0.75; transform: translate3d(calc(var(--sway, 2vw) * -0.6), -46vh, 0) scale(0.85); }
+      74%  { opacity: 0.12; }
+      88%  { opacity: 0.6; }
+      100% { transform: translate3d(var(--sway, 2vw), -78vh, 0) scale(0.55); opacity: 0; }
+    }
+
+    /* ---------- Moon + constellation (fixed celestial layer) ---------- */
+    .celestial { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .moon {
+      position: absolute;
+      top: clamp(3.25rem, 9vh, 5.5rem);
+      right: clamp(1.25rem, 9vw, 7rem);
+      width: clamp(72px, 16vw, 132px);
+      height: auto;
+      opacity: 0.42;
+      transform: translateY(13vh) scale(0.96);
+      filter: drop-shadow(0 0 34px rgba(214, 226, 255, 0.28));
+    }
+    body.revealed .moon { animation: moonRise 4.6s cubic-bezier(.22,.7,.25,1) 1.2s forwards; }
+    @keyframes moonRise {
+      from { transform: translateY(13vh) scale(0.96); opacity: 0.42; }
+      to   { transform: translateY(0)    scale(1);    opacity: 1; }
+    }
+    .constellation {
+      position: absolute;
+      top: clamp(2.5rem, 7vh, 4.5rem);
+      left: clamp(0.75rem, 6vw, 5rem);
+      width: clamp(190px, 46vw, 330px);
+      height: auto;
+      opacity: 0;
+    }
+    body.revealed .constellation { animation: constFade 2s ease 1.4s forwards; }
+    @keyframes constFade { to { opacity: 1; } }
+    .constellation path {
+      fill: none;
+      stroke: rgba(201, 187, 247, 0.55);
+      stroke-width: 1;
+      stroke-linecap: round;
+      stroke-dasharray: 640;
+      stroke-dashoffset: 640;
+    }
+    body.revealed .constellation path { animation: constDraw 5.2s ease-in-out 1.5s forwards; }
+    @keyframes constDraw { to { stroke-dashoffset: 0; } }
+    .constellation circle {
+      fill: var(--star);
+      opacity: 0;
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+    body.revealed .constellation circle {
+      animation: starPop 0.9s cubic-bezier(.2,.8,.3,1.3) forwards;
+      animation-delay: calc(1.5s + var(--i, 0) * 0.55s);
+    }
+    @keyframes starPop {
+      from { opacity: 0; transform: scale(0.2); }
+      60%  { opacity: 1; transform: scale(1.5); }
+      to   { opacity: 1; transform: scale(1); }
     }
 
     /* ---------- Layout ---------- */
@@ -117,14 +197,33 @@
       opacity: 1;
       animation: fadeIn 1.4s ease 0.2s both;
     }
+    .gate__constellation {
+      width: clamp(120px, 30vw, 170px);
+      height: auto;
+      opacity: 0.85;
+    }
+    .gate__constellation path {
+      fill: none;
+      stroke: rgba(201, 187, 247, 0.5);
+      stroke-width: 1;
+      stroke-linecap: round;
+    }
+    .gate__constellation circle { fill: var(--star); }
+    .gate__constellation .pulse { animation: gateStarPulse 3.6s ease-in-out infinite; }
+    @keyframes gateStarPulse {
+      0%, 100% { opacity: 0.45; }
+      50%      { opacity: 1; }
+    }
     .gate__hint {
-      font-style: italic; color: var(--ink-soft);
+      font-style: italic; color: var(--moon-soft);
       font-size: clamp(0.95rem, 3vw, 1.1rem);
       letter-spacing: 0.02em;
     }
     .gate__prompt {
       font-size: clamp(2rem, 8vw, 3rem);
-      font-weight: 300; line-height: 1.15; letter-spacing: -0.015em;
+      font-weight: 280;
+      font-variation-settings: "opsz" 110;
+      line-height: 1.15; letter-spacing: -0.01em;
     }
     .gate__form {
       width: 100%;
@@ -134,36 +233,50 @@
     .gate__input {
       width: 100%; max-width: 22rem;
       background: transparent; border: none;
-      border-bottom: 1px solid var(--ink-line);
-      color: var(--ink);
+      border-bottom: 1px solid var(--moon-line);
+      color: var(--moon);
       font-family: inherit;
       font-size: clamp(1.1rem, 4.5vw, 1.4rem);
       padding: 0.6rem 0.5rem;
+      min-height: 44px;
       text-align: center; outline: none;
-      caret-color: var(--bg-sun);
+      caret-color: var(--blush);
       transition: border-color 0.5s ease;
       letter-spacing: 0.04em;
     }
-    .gate__input:focus { border-bottom-color: var(--ink); }
-    .gate__input::placeholder { color: var(--ink-faint); font-style: italic; }
+    .gate__input:focus { border-bottom-color: var(--moon); }
+    .gate__input:focus-visible {
+      outline: 2px solid var(--lavender);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+    .gate__input::placeholder { color: var(--moon-faint); font-style: italic; }
     .gate__submit {
       appearance: none; -webkit-appearance: none;
-      background: transparent; color: var(--ink);
-      border: 1px solid var(--ink-line);
+      background: transparent; color: var(--moon);
+      border: 1px solid var(--moon-line);
       border-radius: 999px;
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
-      padding: 0.85rem 1.6rem; min-height: 44px;
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: 0.82rem; letter-spacing: 0.24em; text-transform: uppercase;
+      padding: 0.85rem 1.7rem; min-height: 44px;
       cursor: pointer;
-      transition: border-color 0.4s ease, background 0.4s ease, color 0.4s ease;
+      transition: border-color 0.4s ease, background 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
     }
-    .gate__submit:hover, .gate__submit:focus-visible {
-      border-color: var(--ink); background: rgba(247, 234, 210, 0.05); outline: none;
+    .gate__submit:hover {
+      border-color: var(--lavender);
+      background: rgba(201, 187, 247, 0.08);
+      box-shadow: 0 0 22px -8px rgba(201, 187, 247, 0.5);
+    }
+    .gate__submit:focus-visible {
+      outline: 2px solid var(--lavender);
+      outline-offset: 3px;
+      border-color: var(--lavender);
+      background: rgba(201, 187, 247, 0.08);
     }
     .gate__hint-small {
-      font-size: 0.82rem; color: var(--ink-faint);
-      font-family: 'Inter', system-ui, sans-serif;
-      letter-spacing: 0.06em; max-width: 22rem; line-height: 1.55;
+      font-size: 0.86rem; color: var(--moon-faint);
+      font-family: 'Marcellus', Georgia, serif;
+      letter-spacing: 0.07em; max-width: 22rem; line-height: 1.6;
     }
     .hint-card {
       display: grid;
@@ -172,51 +285,48 @@
       max-width: 30rem;
       margin: 0.4rem auto 0;
       padding: clamp(0.85rem, 2.6vw, 1.05rem) clamp(1rem, 3vw, 1.25rem);
-      border: 1px solid rgba(245, 166, 35, 0.42);
-      border-radius: 12px;
+      border: 1px solid rgba(201, 187, 247, 0.4);
+      border-radius: 14px;
       background: linear-gradient(180deg,
-        rgba(245, 166, 35, 0.10),
-        rgba(160, 31, 91, 0.05));
-      box-shadow: 0 12px 28px -22px rgba(245, 166, 35, 0.55);
+        rgba(201, 187, 247, 0.09),
+        rgba(192, 104, 142, 0.05));
+      box-shadow: 0 14px 30px -22px rgba(201, 187, 247, 0.5);
       text-align: left;
     }
     .hint-card__label {
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
-      font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 600;
-      font-size: 0.7rem;
+      gap: 0.5rem;
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: 0.74rem;
       letter-spacing: 0.34em;
       text-transform: uppercase;
-      color: var(--bg-sun);
+      color: var(--lavender-bright);
     }
     .hint-card__label::before {
-      content: "";
+      content: "\2726";
       display: inline-block;
-      width: 11px; height: 11px;
-      border-radius: 50%;
-      background: var(--bg-sun);
-      box-shadow: 0 0 12px 2px rgba(245, 166, 35, 0.55);
+      font-size: 0.9em;
+      color: var(--lavender-bright);
+      text-shadow: 0 0 10px rgba(201, 187, 247, 0.7);
     }
     .hint-card__body {
       margin: 0;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 400;
+      font-weight: 380;
       font-size: clamp(1rem, 3vw, 1.18rem);
       line-height: 1.55;
-      color: var(--ink-soft);
+      color: var(--moon-soft);
     }
     .gate__error {
       display: none;
       margin: 0;
-      font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 500;
-      font-size: 0.74rem;
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: 0.78rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: #ffb38a;
+      color: var(--blush-bright);
       text-align: center;
     }
     .gate__error.show {
@@ -235,28 +345,35 @@
     }
 
     /* ---------- Lyric stage ---------- */
+    /* Lying back, watching the sky: each line condenses out of the dark
+       like stars resolving, holds, then dissolves upward. Timing contract
+       with the JS (hold + per-beat duration) is unchanged. */
     .lyric {
       position: fixed; inset: 0; z-index: 4;
       display: grid; place-items: center;
       font-size: clamp(1.85rem, 8.5vw, 5rem);
-      font-weight: 300; font-style: italic;
-      letter-spacing: -0.012em; line-height: 1.18;
+      font-weight: 270; font-style: italic;
+      font-variation-settings: "opsz" 130;
+      letter-spacing: -0.008em; line-height: 1.18;
       text-align: center;
+      color: var(--moon);
       padding: clamp(1.5rem, 6vw, 3rem);
       opacity: 0; pointer-events: none;
-      text-shadow: 0 1px 30px rgba(10, 6, 18, 0.6);
+      text-shadow:
+        0 0 28px rgba(201, 187, 247, 0.32),
+        0 1px 30px rgba(3, 7, 18, 0.65);
     }
     .lyric.show { animation: lyricCycle var(--dur, 5.4s) ease-in-out forwards; }
     @keyframes lyricCycle {
-      0%   { opacity: 1; transform: translateY(0);    filter: blur(0); }
-      78%  { opacity: 1; transform: translateY(0);    filter: blur(0); }
-      100% { opacity: 0; transform: translateY(-10px); filter: blur(5px); }
+      0%   { opacity: 1; transform: translateY(0);     filter: blur(0); }
+      78%  { opacity: 1; transform: translateY(0);     filter: blur(0); }
+      100% { opacity: 0; transform: translateY(-14px); filter: blur(6px); }
     }
     .lyric .word {
       display: inline-block;
       opacity: 0;
-      transform: translateY(10px);
-      filter: blur(8px);
+      transform: translateY(12px) scale(1.04);
+      filter: blur(10px);
     }
     .lyric .word + .word { margin-left: 0.28em; }
     .lyric__line { display: inline-block; }
@@ -265,9 +382,8 @@
       animation-delay: calc(var(--i, 0) * 0.32s);
     }
     @keyframes wordIn {
-      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
     }
-
     /* ---------- Reveal ---------- */
     .reveal {
       display: none;
@@ -285,24 +401,28 @@
 
     .reveal__opener {
       font-size: clamp(1.05rem, 3.5vw, 1.45rem);
-      font-style: italic; color: var(--ink-soft);
+      font-style: italic; color: var(--moon-soft);
       letter-spacing: 0.01em;
       animation: fadeUp 1.4s ease 0.3s forwards;
     }
     .reveal__headline {
       font-size: clamp(2.1rem, 8.5vw, 4.4rem);
-      font-weight: 400; line-height: 1.18; letter-spacing: -0.018em;
+      font-weight: 360;
+      font-variation-settings: "opsz" 144;
+      line-height: 1.18; letter-spacing: -0.015em;
       animation: fadeUp 1.6s ease 1.5s forwards;
     }
     .reveal__headline em {
       display: inline-block;
-      font-style: italic; font-weight: 500;
+      font-style: italic; font-weight: 480;
       padding-bottom: 0.08em;
-      background: linear-gradient(180deg, #fff8e6 0%, #f5a623 55%, #ec4889 100%);
+      background: linear-gradient(180deg, #ffffff 0%, var(--lavender-bright) 48%, var(--blush-bright) 100%);
       -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 2px 14px rgba(3, 7, 18, 0.65));
     }
 
-    /* Hero photo banner */
+    /* Hero photo banner: moonlit framing, indigo wash at the base so the
+       caption always reads against a dark band. */
     .reveal__hero {
       position: relative;
       width: 100%;
@@ -311,33 +431,39 @@
       border-radius: 14px;
       overflow: hidden;
       margin-block: 0.5rem;
-      box-shadow: 0 30px 60px -25px rgba(0,0,0,0.7), inset 0 0 0 1px var(--ink-line-soft);
+      box-shadow:
+        0 30px 60px -25px rgba(0, 0, 0, 0.75),
+        0 0 40px -18px rgba(201, 187, 247, 0.35),
+        inset 0 0 0 1px var(--moon-line-soft);
       animation: fadeUp 1.6s ease 2.7s forwards;
     }
     .reveal__hero img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
-      filter: saturate(1.02) contrast(1.02) brightness(0.92);
+      filter: saturate(0.96) contrast(1.03) brightness(0.88);
     }
     .reveal__hero::after {
       content: "";
       position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(7,4,13,0) 55%, rgba(7,4,13,0.7) 100%);
+      background:
+        linear-gradient(180deg, rgba(3, 7, 18, 0.12) 0%, rgba(3, 7, 18, 0) 35%),
+        linear-gradient(180deg, rgba(3, 7, 18, 0) 52%, rgba(4, 9, 24, 0.78) 100%);
       pointer-events: none;
     }
     .reveal__hero-caption {
       position: absolute; left: 0; right: 0; bottom: 0;
       padding: clamp(1rem, 3.5vw, 1.5rem);
       display: flex; flex-direction: column; align-items: flex-start;
-      gap: 0.15rem;
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+      gap: 0.2rem;
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: clamp(0.72rem, 2.2vw, 0.82rem);
       letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--ink); text-align: left;
-      text-shadow: 0 1px 12px rgba(0,0,0,0.6);
+      color: var(--moon); text-align: left;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.65);
+      z-index: 1;
     }
-    .reveal__hero-caption .accent { font-size: 0.95em; color: var(--bg-sun); }
+    .reveal__hero-caption .accent { font-size: 0.95em; color: var(--blush-bright); }
 
     /* Logistics: leads + prose, no boxed card */
     .logistics {
@@ -360,38 +486,40 @@
     .logistics__item:nth-child(1) { animation-delay: 5.1s; }
     .logistics__item:nth-child(2) { animation-delay: 5.6s; }
     .logistics__lead {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 600;
+      font-weight: 540;
+      font-variation-settings: "opsz" 144;
       font-size: clamp(2.1rem, 9vw, 3.4rem);
       line-height: 1;
       letter-spacing: -0.005em;
-      background: linear-gradient(180deg, #fff8e6 0%, #f5a623 60%, #ec4889 100%);
+      background: linear-gradient(180deg, #ffffff 0%, var(--lavender-bright) 52%, var(--blush-bright) 100%);
       -webkit-background-clip: text; background-clip: text;
       color: transparent;
       /* drop-shadow respects the background-clip:text glyph shape, unlike
          text-shadow which paints behind the (transparent) text color. */
-      filter: drop-shadow(0 2px 14px rgba(7, 4, 13, 0.65));
+      filter: drop-shadow(0 2px 14px rgba(3, 7, 18, 0.7));
     }
     .logistics__body {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 400;
+      font-weight: 380;
       font-size: clamp(1.05rem, 3.2vw, 1.25rem);
       line-height: 1.5;
-      color: var(--ink-soft);
+      color: var(--moon-soft);
       max-width: 28rem;
       margin: 0 auto;
     }
 
     .reveal__birthday {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 500;
+      font-weight: 460;
+      font-variation-settings: "opsz" 120;
       font-size: clamp(1.55rem, 5.5vw, 2.4rem);
       line-height: 1.2;
       letter-spacing: 0.005em;
-      color: var(--ink);
+      color: var(--moon);
       margin-block: clamp(0.5rem, 2vw, 1rem);
       animation: fadeUp 1.6s ease 8.4s forwards;
       opacity: 0;
@@ -412,11 +540,11 @@
     .quote::before,
     .quote::after {
       position: absolute;
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 500;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 480;
       font-size: clamp(4rem, 14vw, 7.5rem);
       line-height: 0.7;
-      color: rgba(245, 166, 35, 0.28);
+      color: rgba(201, 187, 247, 0.3);
       pointer-events: none;
       user-select: none;
     }
@@ -433,32 +561,33 @@
       transform: rotate(7deg);
     }
     .quote__body {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 400;
+      font-weight: 380;
       font-size: clamp(1.05rem, 3.6vw, 1.4rem);
       line-height: 1.55;
-      color: var(--ink);
+      color: var(--moon);
       display: grid;
       gap: 1em;
       margin: 0;
     }
     .quote__body p { margin: 0; }
     .quote__resolve {
-      color: #ffe7b5;
-      font-weight: 500;
+      color: var(--lavender-bright);
+      font-weight: 480;
       letter-spacing: 0.005em;
     }
     .quote__cite {
       display: block;
       margin-top: clamp(1.1rem, 3vw, 1.5rem);
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.7rem;
+      font-family: 'Marcellus', Georgia, serif;
+      font-style: normal;
+      font-size: 0.74rem;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--ink-faint);
+      color: var(--moon-faint);
     }
-    .quote__cite b { color: var(--ink-soft); font-weight: 500; }
+    .quote__cite b { color: var(--moon-soft); font-weight: 400; }
 
     /* ---------- Lineup ---------- */
     .lineup {
@@ -477,18 +606,19 @@
       display: grid; gap: 0.4rem;
     }
     .lineup__title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 500;
+      font-weight: 460;
+      font-variation-settings: "opsz" 120;
       font-size: clamp(1.5rem, 5vw, 2.2rem);
       letter-spacing: 0.01em;
     }
     .lineup__sub {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.74rem;
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: 0.76rem;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--ink-soft);
+      color: var(--moon-soft);
     }
 
     .lineup__board {
@@ -498,56 +628,66 @@
       padding: clamp(1rem, 3vw, 1.75rem) 0;
       position: relative;
     }
+    /* Constellation rules above and below the board: a thin line with
+       three star-points, rendered with pure CSS gradients. */
     .lineup__board::before,
     .lineup__board::after {
       content: "";
       display: block;
-      width: clamp(40px, 18vw, 80px);
-      height: 1px;
-      background: var(--ink-line);
+      width: clamp(120px, 36vw, 200px);
+      height: 7px;
       margin-inline: auto;
+      background:
+        radial-gradient(circle 2.5px at 50% 50%, var(--star) 0 2px, transparent 2.5px),
+        radial-gradient(circle 2px at 8% 50%, var(--star) 0 1.5px, transparent 2px),
+        radial-gradient(circle 2px at 92% 50%, var(--star) 0 1.5px, transparent 2px),
+        linear-gradient(90deg, transparent 0%, var(--moon-line) 18%, var(--moon-line) 82%, transparent 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 100%, 100% 100%, 100% 100%, 100% 1px;
+      background-position: 0 0, 0 0, 0 0, 0 center;
     }
 
     .tier { line-height: 1.18; }
     .tier--1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 700;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 640;
+      font-variation-settings: "opsz" 144;
       font-size: clamp(2rem, 9vw, 4.4rem);
       letter-spacing: 0.04em;
-      background: linear-gradient(180deg, #fff8e6 0%, #f5a623 55%, #ec4889 100%);
+      background: linear-gradient(180deg, #ffffff 0%, var(--lavender-bright) 50%, var(--blush-bright) 100%);
       -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 2px 16px rgba(3, 7, 18, 0.7)) drop-shadow(0 0 26px rgba(201, 187, 247, 0.22));
       padding-block: 0.25rem;
     }
     .tier--2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 600;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 560;
       font-size: clamp(1.3rem, 5vw, 2.2rem);
       letter-spacing: 0.02em;
-      color: var(--ink);
+      color: var(--moon);
     }
     .tier--3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 500;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 460;
       font-style: italic;
       font-size: clamp(1.1rem, 4vw, 1.6rem);
       letter-spacing: 0.02em;
-      color: var(--ink);
+      color: var(--moon);
     }
     .tier--4 {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 400;
-      font-size: clamp(0.78rem, 2.4vw, 0.95rem);
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: clamp(0.8rem, 2.4vw, 0.97rem);
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--ink-soft);
+      color: var(--moon-soft);
       line-height: 1.85;
       max-width: 44rem;
       margin-inline: auto;
     }
-    .tier--4 .sep { color: var(--ink-faint); margin-inline: 0.25em; }
+    .tier--4 .sep { color: rgba(201, 187, 247, 0.65); margin-inline: 0.25em; }
     .tier__rule {
       width: 40px; height: 1px;
-      background: var(--ink-line);
+      background: var(--moon-line);
       margin: 0.5rem auto 0;
     }
 
@@ -570,20 +710,20 @@
       justify-items: center;
     }
     .itinerary__kicker {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 600;
-      font-size: 0.72rem;
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: 0.76rem;
       letter-spacing: 0.36em;
       text-transform: uppercase;
-      color: var(--bg-sun);
+      color: var(--blush-bright);
     }
     .itinerary__title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 500;
+      font-weight: 460;
+      font-variation-settings: "opsz" 120;
       font-size: clamp(1.55rem, 5vw, 2.2rem);
       letter-spacing: 0.005em;
-      color: var(--ink);
+      color: var(--moon);
     }
     .itinerary__list {
       list-style: none;
@@ -598,24 +738,23 @@
       gap: clamp(0.85rem, 3vw, 1.5rem);
       align-items: baseline;
       padding-block: clamp(0.7rem, 2vw, 0.95rem);
-      border-bottom: 1px solid var(--ink-line-soft);
+      border-bottom: 1px solid var(--moon-line-soft);
     }
     .itinerary__row:last-child { border-bottom: 0; }
     .itinerary__when {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 600;
-      font-size: clamp(0.7rem, 2.2vw, 0.78rem);
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: clamp(0.72rem, 2.2vw, 0.8rem);
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--bg-sun);
+      color: var(--lavender-bright);
     }
     .itinerary__what {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 400;
+      font-weight: 380;
       font-size: clamp(1.05rem, 3vw, 1.2rem);
       line-height: 1.45;
-      color: var(--ink-soft);
+      color: var(--moon-soft);
     }
     @media (max-width: 480px) {
       .itinerary__row {
@@ -627,23 +766,32 @@
 
     /* ---------- Closing ---------- */
     .reveal__divider {
-      width: 60px; height: 1px;
-      background: var(--ink-line);
       justify-self: center;
+      width: clamp(150px, 44vw, 220px);
+      height: 26px;
       margin-top: 0.5rem;
       animation: fadeUp 1.6s ease 9.2s forwards;
+      opacity: 0;
     }
+    .reveal__divider svg { width: 100%; height: 100%; display: block; }
+    .reveal__divider path {
+      fill: none;
+      stroke: rgba(201, 187, 247, 0.5);
+      stroke-width: 1;
+      stroke-linecap: round;
+    }
+    .reveal__divider circle { fill: var(--star); }
     .reveal__sign {
       font-style: italic;
       font-size: clamp(1.25rem, 4.5vw, 1.65rem);
-      color: var(--ink);
+      color: var(--moon);
       animation: fadeUp 1.6s ease 9.6s forwards;
     }
     .reveal__signature {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.78rem;
-      color: var(--ink-faint);
-      letter-spacing: 0.22em;
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: 0.82rem;
+      color: var(--moon-faint);
+      letter-spacing: 0.24em;
       text-transform: uppercase;
       animation: fadeUp 1.6s ease 10.2s forwards;
     }
@@ -657,30 +805,41 @@
     .btn {
       display: inline-flex; align-items: center; gap: 0.6rem;
       padding: 0.85rem 1.5rem; min-height: 44px;
-      border: 1px solid var(--ink-line);
+      border: 1px solid var(--moon-line);
       border-radius: 999px;
-      color: var(--ink);
+      color: var(--moon);
       text-decoration: none;
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.78rem;
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: 0.8rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      transition: border-color 0.4s ease, background 0.4s ease, transform 0.4s ease;
+      transition: border-color 0.4s ease, background 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
     }
-    .btn:hover, .btn:focus-visible {
-      border-color: var(--ink);
-      background: rgba(247, 234, 210, 0.06);
+    .btn:hover {
+      border-color: var(--lavender);
+      background: rgba(201, 187, 247, 0.08);
       transform: translateY(-1px);
-      outline: none;
+      box-shadow: 0 0 24px -10px rgba(201, 187, 247, 0.5);
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--lavender);
+      outline-offset: 3px;
+      border-color: var(--lavender);
+      background: rgba(201, 187, 247, 0.08);
     }
     .btn--primary {
-      border-color: rgba(245, 166, 35, 0.4);
-      color: var(--bg-sun);
+      border-color: rgba(246, 185, 201, 0.45);
+      color: var(--blush-bright);
     }
     .btn--primary:hover {
-      border-color: var(--bg-sun);
-      background: rgba(245, 166, 35, 0.08);
-      color: #ffd58a;
+      border-color: var(--blush);
+      background: rgba(246, 185, 201, 0.09);
+      color: #ffdde6;
+      box-shadow: 0 0 24px -10px rgba(246, 185, 201, 0.55);
+    }
+    .btn--primary:focus-visible {
+      outline-color: var(--blush);
+      border-color: var(--blush);
     }
     .btn svg { width: 14px; height: 14px; }
 
@@ -705,11 +864,18 @@
       animation: fadeUp 1.6s ease 11.2s forwards;
       opacity: 0;
     }
+    /* Botanical sprig divider: a moonlit stem with leaves, pure inline
+       background SVG on the hr so the markup stays semantic. */
     .postscript__rule {
-      width: 80px; height: 1px;
-      background: var(--ink-line);
+      width: clamp(140px, 40vw, 200px);
+      height: 22px;
       margin: 0 auto;
       border: 0;
+      background-color: transparent;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 22' fill='none'><path d='M10 11 H 86 M114 11 H 190' stroke='rgba(214,222,244,0.32)' stroke-width='1' stroke-linecap='round'/><path d='M93 16 Q100 4 107 16' stroke='rgba(201,187,247,0.6)' stroke-width='1' fill='none' stroke-linecap='round'/><path d='M96 12 Q94 7 90 7 Q93 12 96 12 Z M104 12 Q106 7 110 7 Q107 12 104 12 Z' fill='rgba(201,187,247,0.45)'/><circle cx='100' cy='6' r='1.6' fill='rgba(227,234,255,0.9)'/></svg>");
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
     }
     .postscript__gate {
       display: grid;
@@ -721,21 +887,21 @@
     }
     .postscript__gate.unlocked { display: none; }
     .postscript__kicker {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 500;
-      font-size: 0.74rem;
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: 0.78rem;
       letter-spacing: 0.34em;
       text-transform: uppercase;
-      color: var(--bg-sun);
+      color: var(--blush-bright);
     }
     .postscript__title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 500;
+      font-weight: 460;
+      font-variation-settings: "opsz" 120;
       font-size: clamp(1.55rem, 5.5vw, 2.4rem);
       letter-spacing: 0.005em;
       line-height: 1.15;
-      color: var(--ink);
+      color: var(--moon);
     }
     .postscript__form {
       width: 100%;
@@ -749,12 +915,12 @@
       width: 100%;
       max-width: 38rem;
       margin: 0 auto;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 400;
+      font-weight: 380;
       font-size: clamp(1.05rem, 3.4vw, 1.3rem);
       line-height: 1.7;
-      color: var(--ink);
+      color: var(--moon);
       text-align: center;
       display: none;
     }
@@ -767,29 +933,29 @@
       to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
     }
     .poem__preamble {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 500;
+      font-weight: 440;
       font-size: clamp(1rem, 3vw, 1.15rem);
       line-height: 1.6;
-      color: var(--ink-soft);
+      color: var(--moon-soft);
       max-width: 32rem;
       margin: 0 auto;
     }
     .poem__rule {
       width: 60px; height: 1px;
-      background: var(--ink-line);
+      background: var(--moon-line);
       border: 0;
       margin: clamp(1.5rem, 4vw, 2.25rem) auto;
     }
     .poem .roman {
       display: block;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
-      font-weight: 600;
+      font-weight: 560;
       font-size: clamp(1.4rem, 4.8vw, 1.9rem);
       letter-spacing: 0.08em;
-      color: var(--bg-sun);
+      color: var(--lavender-bright);
       margin: clamp(1.75rem, 5vw, 2.75rem) 0 0.75rem;
     }
     .poem .roman:first-child { margin-top: 0; }
@@ -799,8 +965,8 @@
     .poem .stanza:first-of-type { margin-top: 0.5rem; }
     .poem .stanza--closing {
       margin-top: clamp(1.5rem, 4vw, 2.25rem);
-      color: #ffe7b5;
-      font-weight: 500;
+      color: var(--blush-bright);
+      font-weight: 460;
     }
 
     /* ---------- Hidden YouTube audio host ---------- */
@@ -825,11 +991,11 @@
       padding: 0.7rem 1.2rem;
       min-height: 44px;
       border-radius: 999px;
-      background: rgba(7, 4, 13, 0.72);
-      border: 1px solid var(--ink-line);
-      color: var(--ink);
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.74rem;
+      background: rgba(6, 13, 32, 0.78);
+      border: 1px solid var(--moon-line);
+      color: var(--moon);
+      font-family: 'Marcellus', Georgia, serif;
+      font-size: 0.78rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       cursor: pointer;
@@ -840,10 +1006,14 @@
       transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.4s ease, background 0.4s ease;
     }
     .audio-fallback.show { display: inline-flex; opacity: 1; transform: translateX(-50%) translateY(0); }
-    .audio-fallback:hover, .audio-fallback:focus-visible {
-      border-color: var(--ink);
-      background: rgba(7, 4, 13, 0.85);
-      outline: none;
+    .audio-fallback:hover {
+      border-color: var(--lavender);
+      background: rgba(6, 13, 32, 0.9);
+    }
+    .audio-fallback:focus-visible {
+      outline: 2px solid var(--lavender);
+      outline-offset: 3px;
+      border-color: var(--lavender);
     }
     .audio-fallback svg { width: 12px; height: 12px; }
 
@@ -857,7 +1027,43 @@
 <body>
   <div class="sky" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
-  <div class="embers" aria-hidden="true" id="embers"></div>
+  <div class="stars" aria-hidden="true" id="stars"></div>
+  <div class="fireflies" aria-hidden="true" id="fireflies"></div>
+
+  <!-- Celestial layer: the moon waits low and dim behind the gate, then
+       rises once the reveal begins, while a constellation draws itself. -->
+  <div class="celestial" aria-hidden="true">
+    <svg class="moon" viewBox="0 0 200 200" focusable="false">
+      <defs>
+        <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="rgba(238, 242, 255, 0.5)"/>
+          <stop offset="55%" stop-color="rgba(214, 226, 255, 0.16)"/>
+          <stop offset="100%" stop-color="rgba(214, 226, 255, 0)"/>
+        </radialGradient>
+        <radialGradient id="moonFace" cx="38%" cy="34%" r="78%">
+          <stop offset="0%"  stop-color="#fbfcff"/>
+          <stop offset="62%" stop-color="#dde5f8"/>
+          <stop offset="100%" stop-color="#b6c3e4"/>
+        </radialGradient>
+      </defs>
+      <circle cx="100" cy="100" r="96" fill="url(#moonGlow)"/>
+      <circle cx="100" cy="100" r="46" fill="url(#moonFace)"/>
+      <circle cx="85"  cy="87"  r="7"   fill="rgba(150, 167, 208, 0.32)"/>
+      <circle cx="112" cy="109" r="5"   fill="rgba(150, 167, 208, 0.28)"/>
+      <circle cx="97"  cy="119" r="3.5" fill="rgba(150, 167, 208, 0.3)"/>
+      <circle cx="116" cy="83"  r="4"   fill="rgba(150, 167, 208, 0.24)"/>
+    </svg>
+    <svg class="constellation" viewBox="0 0 320 180" focusable="false">
+      <path d="M18 140 L62 96 L118 112 L158 58 L210 84 L252 34 L296 60"/>
+      <circle cx="18"  cy="140" r="2.2" style="--i:0"/>
+      <circle cx="62"  cy="96"  r="1.8" style="--i:1"/>
+      <circle cx="118" cy="112" r="2.6" style="--i:2"/>
+      <circle cx="158" cy="58"  r="1.8" style="--i:3"/>
+      <circle cx="210" cy="84"  r="2.2" style="--i:4"/>
+      <circle cx="252" cy="34"  r="1.8" style="--i:5"/>
+      <circle cx="296" cy="60"  r="2.6" style="--i:6"/>
+    </svg>
+  </div>
 
   <div class="ytplayer" aria-hidden="true"><div id="ytplayer"></div></div>
   <button id="audioFallback" class="audio-fallback" type="button" aria-label="Tap to play sound">
@@ -869,6 +1075,14 @@
 
     <!-- ---------- Gate ---------- -->
     <section class="gate" id="gate" aria-label="Locked">
+      <svg class="gate__constellation" viewBox="0 0 160 70" aria-hidden="true" focusable="false">
+        <path d="M12 52 L46 30 L80 40 L114 18 L148 34"/>
+        <circle class="pulse" cx="12"  cy="52" r="2"   style="animation-delay: 0s"/>
+        <circle class="pulse" cx="46"  cy="30" r="1.6" style="animation-delay: 0.7s"/>
+        <circle class="pulse" cx="80"  cy="40" r="2.4" style="animation-delay: 1.4s"/>
+        <circle class="pulse" cx="114" cy="18" r="1.6" style="animation-delay: 2.1s"/>
+        <circle class="pulse" cx="148" cy="34" r="2"   style="animation-delay: 2.8s"/>
+      </svg>
       <p class="gate__hint">For Camille.</p>
       <h1 class="gate__prompt">A word, first.</h1>
       <form class="gate__form" id="gateForm" autocomplete="off" novalidate>
@@ -1011,7 +1225,17 @@
 
       <p class="reveal__birthday">Happy birthday, my love.</p>
 
-      <div class="reveal__divider" aria-hidden="true"></div>
+      <div class="reveal__divider" aria-hidden="true">
+        <svg viewBox="0 0 220 26" focusable="false">
+          <path d="M8 18 L52 10 L96 16 L140 6 L184 14 L212 10"/>
+          <circle cx="8"   cy="18" r="1.6"/>
+          <circle cx="52"  cy="10" r="2"/>
+          <circle cx="96"  cy="16" r="1.6"/>
+          <circle cx="140" cy="6"  r="2.2"/>
+          <circle cx="184" cy="14" r="1.6"/>
+          <circle cx="212" cy="10" r="2"/>
+        </svg>
+      </div>
 
       <p class="reveal__sign">If you want me, if you need me, I&rsquo;m yours.</p>
       <p class="reveal__signature">Jayce</p>
@@ -1149,23 +1373,37 @@
       return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
     }
 
-    // Slow rising embers
-    (function spawnEmbers() {
-      const host = document.getElementById("embers");
-      const count = window.matchMedia("(max-width: 600px)").matches ? 10 : 18;
-      for (let i = 0; i < count; i++) {
-        const e = document.createElement("span");
-        const dur   = 14 + Math.random() * 18;
+    // Night garden: a twinkling starfield plus slow drifting fireflies.
+    // Both layers sit below the content layer so particles never overlap text.
+    (function spawnNight() {
+      const small = window.matchMedia("(max-width: 600px)").matches;
+
+      const starHost = document.getElementById("stars");
+      const starCount = small ? 44 : 84;
+      for (let i = 0; i < starCount; i++) {
+        const s = document.createElement("span");
+        const size = 1 + Math.random() * 1.6;
+        s.style.left = (Math.random() * 100) + "%";
+        s.style.top = (Math.random() * 100) + "%";
+        s.style.width = s.style.height = size.toFixed(2) + "px";
+        s.style.setProperty("--tw", (2.6 + Math.random() * 4.6).toFixed(2) + "s");
+        s.style.setProperty("--twd", (-Math.random() * 7).toFixed(2) + "s");
+        starHost.appendChild(s);
+      }
+
+      const flyHost = document.getElementById("fireflies");
+      const flyCount = small ? 8 : 14;
+      for (let i = 0; i < flyCount; i++) {
+        const f = document.createElement("span");
+        const dur   = 18 + Math.random() * 18;
         const delay = -Math.random() * dur;
-        const left  = Math.random() * 100;
-        const size  = 2 + Math.random() * 2.5;
-        const hue   = 20 + Math.random() * 30;
-        e.style.left = left + "%";
-        e.style.width = e.style.height = size + "px";
-        e.style.background = `hsl(${hue}, 90%, 65%)`;
-        e.style.animationDuration = dur + "s";
-        e.style.animationDelay = delay + "s";
-        host.appendChild(e);
+        const size  = 3 + Math.random() * 2;
+        f.style.left = (Math.random() * 100) + "%";
+        f.style.width = f.style.height = size.toFixed(2) + "px";
+        f.style.setProperty("--sway", ((Math.random() * 8) - 4).toFixed(2) + "vw");
+        f.style.animationDuration = dur.toFixed(2) + "s";
+        f.style.animationDelay = delay.toFixed(2) + "s";
+        flyHost.appendChild(f);
       }
     })();
 
@@ -1357,5 +1595,6 @@
       window.scrollTo({ top: 0 });
     }
   </script>
+
 </body>
 </html>
